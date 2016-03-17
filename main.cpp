@@ -6,9 +6,9 @@ Course:			CS303
 Program:		Project2 (Wookie Workgroup)
 Team:			Team1  
 Due Date:		March 12, 2016
-Description:	Infix Parser
-Inputs:			User given polynomial
-Outputs:		Result of polynomial adddition sorted by exponet with terms simplified
+Description:	Infix Parser, uses stacks and converts expressions to postfix for evaluation
+Inputs:			User given polynomial as a string
+Outputs:		Result as an int
 
 *********************************************/
 
