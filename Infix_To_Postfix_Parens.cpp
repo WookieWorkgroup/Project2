@@ -3,8 +3,9 @@
 #include "Infix_To_Postfix.h"
 #include <sstream>
 #include <cctype>
-using std::string;
-using std::istringstream;
+#include <string>
+
+using namespace std;
 
 const string Infix_To_Postfix::OPERATORS = "+-*/%()[]{}";
 const int Infix_To_Postfix::PRECEDENCE[] = { 1, 1, 2, 2, 2, -1, -1, -1, -1, -1, -1 };
@@ -17,8 +18,13 @@ const int Infix_To_Postfix::PRECEDENCE[] = { 1, 1, 2, 2, 2, -1, -1, -1, -1, -1, 
 */
 string Infix_To_Postfix::convert(const string& expression){
   postfix = "";
+  
+  // Empty the stack
   while (!operator_stack.empty()) 
     operator_stack.pop();
+  
+ 
+
   istringstream infix_tokens(expression);
   string next_token;
   while(infix_tokens >> next_token) {

@@ -21,8 +21,6 @@ Outputs:		Result as an int
 
 using namespace std;
 
-
-
 int main()
 {
 	// Variables for user input, converted postfix expression, final result, conversions
@@ -49,3 +47,4 @@ int main()
 	system("pause");
 
 }
+
