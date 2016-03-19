@@ -27,7 +27,7 @@ int main()
 	//STUFF THAT DANIEL ADDED
 	//READ THE README ON GITHUB!!!!!!!
 	Infix_Eval ie;
-	string user_input = "3+4*12/6";
+	string user_input = "(3+4)*12/6";
 	string post_exp = "";
 	int result = 0;
 	Postfix_Evaluator post_eval;

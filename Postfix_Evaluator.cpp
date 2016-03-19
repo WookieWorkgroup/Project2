@@ -60,11 +60,17 @@ int Postfix_Evaluator::eval_op(char op) {
     throw Syntax_Error("Stack is empty");
   int rhs = operand_stack.top();
   operand_stack.pop();
+  
   if (operand_stack.empty())
-    throw Syntax_Error("Stack is empty");
+  
+	  throw Syntax_Error("Stack is empty");
+  
   int lhs = operand_stack.top();
+  
   operand_stack.pop();
+  
   int result = 0;
+  
   switch(op) {
   case '+' : result = lhs + rhs;
              break;

@@ -42,8 +42,11 @@ int Infix_Eval::evaluate(string s)
 			{
 				while (!operators.empty() && getPrecedence(c) < getPrecedence(operators.top()))
 				{
-					output+=operators.top();
-					output += " ";
+					if (operators.top() != ')' || operators.top() != '(')
+					{
+						output += operators.top();
+						output += " ";
+					}
 					cout << "Popping stack to output: " << operators.top() << endl;
 					if (!operators.empty())operators.pop();
 				}
@@ -52,8 +55,11 @@ int Infix_Eval::evaluate(string s)
 			{
 				while (!operators.empty() && getPrecedence(c) <= getPrecedence(operators.top()))
 				{
-					output+=operators.top();
-					output += " ";
+					if (operators.top() != ')' || operators.top() != '(')
+					{
+						output += operators.top();
+						output += " ";
+					}
 					cout << "Popping stack to output: " << operators.top() << endl;
 					if (!operators.empty())operators.pop();
 				}
@@ -61,7 +67,9 @@ int Infix_Eval::evaluate(string s)
 			operators.push(c);
 			cout << "Pushing token to stack: " << c << endl;
 		}
-		else if (c == '(')
+		
+		
+	else if (c == '(')
 		{
 			operators.push(c);
 			cout << "Pushing token to stack: " << c << endl;
@@ -70,8 +78,11 @@ int Infix_Eval::evaluate(string s)
 		{
 			while (!operators.empty() && operators.top() != '(')
 			{
-				output+=operators.top();
-				output += " ";
+				if (operators.top() != ')' || operators.top() != '(')
+				{
+					output += operators.top();
+					output += " ";
+				}
 				cout << "Popping stack to output: " << operators.top() << endl;
 				if (!operators.empty())operators.pop();
 			}
@@ -82,8 +93,11 @@ int Infix_Eval::evaluate(string s)
 	}
 	while (!operators.empty())
 	{
-		output+=operators.top();
-		output += " ";
+		if (operators.top() != ')' || operators.top() != '(')
+		{
+			output += operators.top();
+			output += " ";
+		}
 		if(!operators.empty())operators.pop();
 	}
 
@@ -94,6 +108,7 @@ string Infix_Eval::returnOutput()
 {
 
 	cout << "output is " << output << endl;
+	return output;
 	
 }
 
@@ -108,6 +123,9 @@ int Infix_Eval::getPrecedence(char c)
 {
 	switch (c)
 	{
+	case '(':
+	case ')':
+		return 9;
 	case '!':
 	case '@':
 	case '#':
