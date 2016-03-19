@@ -2,7 +2,8 @@
 
 Infix_Eval::Infix_Eval()
 {
-	//Default constructor, not used at the moment
+	//Default constructor
+	string output = "";
 }
 
 int Infix_Eval::evaluate(string s)
@@ -18,8 +19,22 @@ int Infix_Eval::evaluate(string s)
 		cout << "Token:\t" << c << endl;
 		if (isdigit(c))
 		{
-			output.push(c);
-			cout << "Adding token to output: " << c << endl;
+			// Check for more digits
+			int number = 0;
+			while (token < s.length() && isdigit(c))
+			{
+				
+				number *= 10;
+				number += c - 48;
+				++token;
+				c = s[token];
+			}
+			--token;
+			c = s[token];
+
+			output+=to_string(number);
+			output += " ";
+			cout << "Adding token to output: " << number << endl;
 		}
 		else if (isOperator(c))
 		{
@@ -27,7 +42,8 @@ int Infix_Eval::evaluate(string s)
 			{
 				while (!operators.empty() && getPrecedence(c) < getPrecedence(operators.top()))
 				{
-					output.push(operators.top());
+					output+=operators.top();
+					output += " ";
 					cout << "Popping stack to output: " << operators.top() << endl;
 					if (!operators.empty())operators.pop();
 				}
@@ -36,7 +52,8 @@ int Infix_Eval::evaluate(string s)
 			{
 				while (!operators.empty() && getPrecedence(c) <= getPrecedence(operators.top()))
 				{
-					output.push(operators.top());
+					output+=operators.top();
+					output += " ";
 					cout << "Popping stack to output: " << operators.top() << endl;
 					if (!operators.empty())operators.pop();
 				}
@@ -53,7 +70,8 @@ int Infix_Eval::evaluate(string s)
 		{
 			while (!operators.empty() && operators.top() != '(')
 			{
-				output.push(operators.top());
+				output+=operators.top();
+				output += " ";
 				cout << "Popping stack to output: " << operators.top() << endl;
 				if (!operators.empty())operators.pop();
 			}
@@ -64,20 +82,20 @@ int Infix_Eval::evaluate(string s)
 	}
 	while (!operators.empty())
 	{
-		output.push(operators.top());
+		output+=operators.top();
+		output += " ";
 		if(!operators.empty())operators.pop();
 	}
 
 	return 0;
 }
 
-void Infix_Eval::printOutput()
+string Infix_Eval::returnOutput()
 {
-	while (!output.empty())
-	{
-		cout << output.front() << " ";
-		output.pop();
-	}
+
+	cout << "output is " << output << endl;
+	return output;
+	
 }
 
 //Returns whether or not c is an operator

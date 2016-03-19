@@ -7,6 +7,7 @@
 #include <queue>
 #include <sstream>
 #include <cctype>
+#include <iostream>
 
 using namespace std;
 
@@ -14,7 +15,7 @@ class Infix_Eval {
 public:
 	Infix_Eval();
 	int evaluate(string s);
-	void printOutput();
+	string returnOutput();
 private:
 	bool isOperator(char c);
 	void replaceAll(string& str, const string& from, const string& to);
@@ -24,7 +25,7 @@ private:
 	int getPrecedence(char c);
 	const string OPERATORS = "!@#-^*/%+>$<~`:&|";
 	stack<char> operators;
-	queue<char> output;
+	string output;
 };
 
 #endif
