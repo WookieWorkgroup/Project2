@@ -2,111 +2,28 @@
 
 Infix_Eval::Infix_Eval()
 {
-
+	//Default constructor, not used at the moment
 }
 
 int Infix_Eval::evaluate(string s)
 {
-	char op;
-	double d1, d2;
-	int current_precedence = 8;
-	s = convertOperatorsToSingleChars(s);
-
-	for (int i = 0; i < s.length(); ++i)
-	{
-		if (isdigit(s[i]) || s[i] == '(')
-		{
-			cout << "s[i] is a number or opening parentheses\n";
-			operands.push(s[i]);
-		}
-		else if (isOperator(s[i]))
-		{
-			cout << "s[i] is operator\n";
-			if (!operators.empty())
-			{
-				while (getPrecedence(operators.top()) >= getPrecedence(s[i]))
-				{
-					if (!operators.empty())op = operators.top();
-					operators.pop();
-
-					d1 = operands.top() - 48;
-					operands.pop();
-
-					d2 = operands.top() - 48;
-					operands.pop();
-
-					operands.push(binarySolve(d1, d2, op));
-					cout << "Pushing operation: " << d1 << " " << op << " " << d2 << endl;
-				}
-			}
-			else
-			{
-				operators.push(s[i]);
-			}
-		}
-		else if (s[i] == ')')
-		{
-			cout << "s[i] is a closing parenteses\n";
-			while (operands.top() != ')')
-			{
-				if (!operators.empty())op = operators.top();
-				operators.pop();
-
-				d1 = operands.top() - 48;
-				operands.pop();
-
-				d2 = operands.top() - 48;
-				operands.pop();
-
-				operands.push(binarySolve(d1, d2, op));
-				cout << "Pushing operation: " << d1 << " " << op << " " << d2 << endl;
-			}
-		}
-		else
-		{
-			cout << "s[i] is in the else\n";
-			while (!operators.empty())
-			{
-				if (!operators.empty())op = operators.top();
-				operators.pop();
-
-				d1 = operands.top() - 48;
-				operands.pop();
-
-				d2 = operands.top() - 48;
-				operands.pop();
-
-				operands.push(binarySolve(d1, d2, op));
-				cout << "Pushing operation: " << d1 << " " << op << " " << d2 << endl;
-			}
-		}
-	}
-	while (!operators.empty())
-	{
-		op = operators.top();
-		operators.pop();
-
-		d1 = operands.top() - 48;
-		operands.pop();
-
-		d2 = operands.top() - 48;
-		operands.pop();
-		operands.push(binarySolve(d1, d2, op));
-		cout << "Pushing operation: " << d1 << " " << op << " " << d2 << endl;
-	}
-	return operands.top();
+	//Our algorithm goes here!
 }
 
+//Returns whether or not c is an operator
 bool Infix_Eval::isOperator(char c)
 {
 	return OPERATORS.find(c) != string::npos;
 }
 
+//Gets the precedence, as an int, of operation c
 int Infix_Eval::getPrecedence(char c)
 {
+	//Subtracts 48 because thats the difference between the char returned and the actual number.
 	return (int)PRECEDENCE[OPERATORS.find(c)] - 48;
 }
 
+//Cleans string for processing, more details inside function
 string Infix_Eval::convertOperatorsToSingleChars(string s)
 {
 	string result = s;
@@ -128,6 +45,9 @@ string Infix_Eval::convertOperatorsToSingleChars(string s)
 	This will make it easier to put onto the stack and to see what calculations we need to be doing. It
 	also avoid complications because now operators such as '!' and '!=' will not share the same
 	initial char.
+
+	This way, our function just needs to get one char and use that as the operator. This function takes in one string and returns another so that we can save
+	the original string value without replacing it.
 	*/
 	replaceAll(result, "++", "@");
 	replaceAll(result, "--", "#");
@@ -137,10 +57,20 @@ string Infix_Eval::convertOperatorsToSingleChars(string s)
 	replaceAll(result, "!=", ":");
 	replaceAll(result, "&&", "&");
 	replaceAll(result, "||", "|");
+
+	/*
+	Continued confession time:
+
+	I got rid of the minus sign as an operator for subtraction. Instead, every minus sign is treated as a negation of the following number. The following replaceAll command
+	modifies each minus sign so that we can "add the negative" instead. It is important that this last step is done after the replaceAll(result, "--", "#"); call, otherwise
+	the decrement operator would get screwed up.
+	*/
+
 	replaceAll(result, "-", "+-");
 	return result;
 }
 
+//Given the string str, it replaces each instance of "from" with "to"
 void Infix_Eval::replaceAll(string& str, const string& from, const string& to)
 {
 	if (from.empty())
@@ -152,6 +82,7 @@ void Infix_Eval::replaceAll(string& str, const string& from, const string& to)
 	}
 }
 
+//Returns the solved unary expression of operation c on operand i
 int Infix_Eval::unarySolve(int i, char c)
 {
 	switch (c)
@@ -167,6 +98,7 @@ int Infix_Eval::unarySolve(int i, char c)
 	}
 }
 
+//Returns the solved binary expression of operation c on operands i1 and i2
 double Infix_Eval::binarySolve(double i1, double i2, char c)
 {
 	switch (c)
