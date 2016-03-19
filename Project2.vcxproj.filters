@@ -18,10 +18,10 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Postfix_Evaluator.cpp">
+    <ClCompile Include="Infix_To_Postfix_Parens.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Infix_To_Postfix_Parens.cpp">
+    <ClCompile Include="Postfix_Evaluator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -33,6 +33,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Syntax_Error.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Infix_Eval.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

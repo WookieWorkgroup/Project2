@@ -83,6 +83,7 @@
     <ClCompile Include="Postfix_Evaluator.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Infix_Eval.h" />
     <ClInclude Include="Infix_To_Postfix.h" />
     <ClInclude Include="Postfix_Evaluator.h" />
     <ClInclude Include="Syntax_Error.h" />
