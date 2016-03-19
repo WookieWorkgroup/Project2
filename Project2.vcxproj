@@ -78,6 +78,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Infix_Eval.cpp" />
     <ClCompile Include="Infix_To_Postfix_Parens.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Postfix_Evaluator.cpp" />
