@@ -1,4 +1,4 @@
-/*********************************************
+﻿/*********************************************
 
 Name:			Joshua Neustrom, jwnf7b@mail.umkc.edu, 10227835
 
@@ -18,11 +18,25 @@ Outputs:		Result as an int
 #include "Syntax_Error.h"
 #include "Postfix_Evaluator.h"
 #include "Infix_To_Postfix.h"
+#include "Infix_Eval.h"
 
 using namespace std;
 
 int main()
 {
+	//STUFF THAT DANIEL ADDED
+	//READ THE README ON GITHUB!!!!!!!
+	Infix_Eval ie;
+
+	ie.evaluate("3+4*5/6");
+	ie.printOutput();
+
+	system("pause");
+	exit(0);
+	
+
+
+	//STUFF THAT WAS HERE BEFORE DANIEL EDITED...
 	// Variables for user input, converted postfix expression, final result, conversions
 	string user_input = "( 3 + 2 ) * 5 - 4";
 	string post_exp = "";

@@ -7,7 +7,77 @@ Infix_Eval::Infix_Eval()
 
 int Infix_Eval::evaluate(string s)
 {
-	//Our algorithm goes here!
+	//The algorithm used is Edsger Dijkstra's "Shunting-Yard Algorithm" and is
+	//copied from the wikipedia page.
+	//See https://en.wikipedia.org/wiki/Shunting-yard_algorithm for more info
+
+	int token = 0;
+	while (token < s.length())
+	{
+		char c = s[token];
+		cout << "Token:\t" << c << endl;
+		if (isdigit(c))
+		{
+			output.push(c);
+			cout << "Adding token to output: " << c << endl;
+		}
+		else if (isOperator(c))
+		{
+			if (c == '^')
+			{
+				while (!operators.empty() && getPrecedence(c) < getPrecedence(operators.top()))
+				{
+					output.push(operators.top());
+					cout << "Popping stack to output: " << operators.top() << endl;
+					if (!operators.empty())operators.pop();
+				}
+			}
+			else
+			{
+				while (!operators.empty() && getPrecedence(c) <= getPrecedence(operators.top()))
+				{
+					output.push(operators.top());
+					cout << "Popping stack to output: " << operators.top() << endl;
+					if (!operators.empty())operators.pop();
+				}
+			}
+			operators.push(c);
+			cout << "Pushing token to stack: " << c << endl;
+		}
+		else if (c == '(')
+		{
+			operators.push(c);
+			cout << "Pushing token to stack: " << c << endl;
+		}
+		else if (c == ')')
+		{
+			while (!operators.empty() && operators.top() != '(')
+			{
+				output.push(operators.top());
+				cout << "Popping stack to output: " << operators.top() << endl;
+				if (!operators.empty())operators.pop();
+			}
+			if (!operators.empty())operators.pop(); //removes the opening parentheses
+			cout << "Pop stack" << endl;
+		}
+		++token;
+	}
+	while (!operators.empty())
+	{
+		output.push(operators.top());
+		if(!operators.empty())operators.pop();
+	}
+
+	return 0;
+}
+
+void Infix_Eval::printOutput()
+{
+	while (!output.empty())
+	{
+		cout << output.front() << " ";
+		output.pop();
+	}
 }
 
 //Returns whether or not c is an operator
@@ -19,8 +89,36 @@ bool Infix_Eval::isOperator(char c)
 //Gets the precedence, as an int, of operation c
 int Infix_Eval::getPrecedence(char c)
 {
-	//Subtracts 48 because thats the difference between the char returned and the actual number.
-	return (int)PRECEDENCE[OPERATORS.find(c)] - 48;
+	switch (c)
+	{
+	case '!':
+	case '@':
+	case '#':
+	case '-':
+		return 8;
+	case '^':
+		return 7;
+	case '*':
+	case '/':
+	case '%':
+		return 6;
+	case '+':
+		return 5;
+	case '>':
+	case '$':
+	case '<':
+	case '~':
+		return 4;
+	case '`':
+	case ':':
+		return 3;
+	case '&':
+		return 2;
+	case '|':
+		return 1;
+	default:
+		return -1;
+	}
 }
 
 //Cleans string for processing, more details inside function
