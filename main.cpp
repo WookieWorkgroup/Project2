@@ -32,14 +32,9 @@ int main()
 	int result = 0;
 	Postfix_Evaluator post_eval;
 
-
 	// show input, requires spaces to tokenize properly
 	cout << "your input is " << user_input << endl << endl;
 	system("pause");
-
-
-	
-
 
 	// convert to a postfix expression
 	ie.evaluate(user_input);

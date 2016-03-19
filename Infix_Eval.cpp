@@ -94,7 +94,6 @@ string Infix_Eval::returnOutput()
 {
 
 	cout << "output is " << output << endl;
-	return output;
 	
 }
 
