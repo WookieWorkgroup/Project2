@@ -78,11 +78,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Desktop\Homework\infix_expression_calc\Infix_Eval.cpp" />
+    <ClCompile Include="Infix_To_Postfix_Parens.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Postfix_Evaluator.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Desktop\Homework\infix_expression_calc\Infix_Eval.h" />
+    <ClInclude Include="Infix_To_Postfix.h" />
+    <ClInclude Include="Postfix_Evaluator.h" />
+    <ClInclude Include="Syntax_Error.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
