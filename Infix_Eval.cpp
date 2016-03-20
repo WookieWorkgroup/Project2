@@ -42,7 +42,7 @@ int Infix_Eval::evaluate(string s)
 			{
 				while (!operators.empty() && getPrecedence(c) < getPrecedence(operators.top()))
 				{
-					if (operators.top() != ')' || operators.top() != '(')
+					if (operators.top() != ')' && operators.top() != '(')
 					{
 						output += operators.top();
 						output += " ";
@@ -55,7 +55,7 @@ int Infix_Eval::evaluate(string s)
 			{
 				while (!operators.empty() && getPrecedence(c) <= getPrecedence(operators.top()))
 				{
-					if (operators.top() != ')' || operators.top() != '(')
+					if (operators.top() != ')' && operators.top() != '(')
 					{
 						output += operators.top();
 						output += " ";
@@ -78,7 +78,7 @@ int Infix_Eval::evaluate(string s)
 		{
 			while (!operators.empty() && operators.top() != '(')
 			{
-				if (operators.top() != ')' || operators.top() != '(')
+				if (operators.top() != ')' && operators.top() != '(')
 				{
 					output += operators.top();
 					output += " ";
@@ -93,7 +93,7 @@ int Infix_Eval::evaluate(string s)
 	}
 	while (!operators.empty())
 	{
-		if (operators.top() != ')' || operators.top() != '(')
+		if (operators.top() != ')' && operators.top() != '(')
 		{
 			output += operators.top();
 			output += " ";
@@ -214,7 +214,7 @@ void Infix_Eval::replaceAll(string& str, const string& from, const string& to)
 		start_pos += to.length();
 	}
 }
-
+// Not in use, put code into the Postfix_Evaluator
 //Returns the solved unary expression of operation c on operand i
 int Infix_Eval::unarySolve(int i, char c)
 {
@@ -230,7 +230,7 @@ int Infix_Eval::unarySolve(int i, char c)
 		return -i;
 	}
 }
-
+// Not in use currently, put code into the postfix_eval function
 //Returns the solved binary expression of operation c on operands i1 and i2
 double Infix_Eval::binarySolve(double i1, double i2, char c)
 {

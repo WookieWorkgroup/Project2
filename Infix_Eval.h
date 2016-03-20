@@ -8,7 +8,9 @@
 #include <sstream>
 #include <cctype>
 #include <iostream>
+#include <fstream>
 #include "Syntax_Error.h"
+
 
 using namespace std;
 

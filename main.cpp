@@ -24,8 +24,7 @@ using namespace std;
 
 int main()
 {
-	//STUFF THAT DANIEL ADDED
-	//READ THE README ON GITHUB!!!!!!!
+	//See Read Me
 	Infix_Eval ie;
 	string user_input = "(3+4)*12/6";
 	string post_exp = "";
