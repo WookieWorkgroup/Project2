@@ -29,7 +29,6 @@ int main()
 	Infix_Eval ie;
 
 	ie.evaluate("3+4*5/6");
-	ie.printOutput();
 
 	system("pause");
 	exit(0);

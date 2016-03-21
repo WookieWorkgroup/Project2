@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <stack>
 #include <queue>
 #include <sstream>
@@ -14,7 +15,7 @@ class Infix_Eval {
 public:
 	Infix_Eval();
 	int evaluate(string s);
-	void printOutput();
+	string getOutput();
 private:
 	bool isOperator(char c);
 	void replaceAll(string& str, const string& from, const string& to);

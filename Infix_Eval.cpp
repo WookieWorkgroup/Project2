@@ -15,11 +15,9 @@ int Infix_Eval::evaluate(string s)
 	while (token < s.length())
 	{
 		char c = s[token];
-		cout << "Token:\t" << c << endl;
 		if (isdigit(c))
 		{
 			output.push(c);
-			cout << "Adding token to output: " << c << endl;
 		}
 		else if (isOperator(c))
 		{
@@ -28,7 +26,6 @@ int Infix_Eval::evaluate(string s)
 				while (!operators.empty() && getPrecedence(c) < getPrecedence(operators.top()))
 				{
 					output.push(operators.top());
-					cout << "Popping stack to output: " << operators.top() << endl;
 					if (!operators.empty())operators.pop();
 				}
 			}
@@ -37,28 +34,23 @@ int Infix_Eval::evaluate(string s)
 				while (!operators.empty() && getPrecedence(c) <= getPrecedence(operators.top()))
 				{
 					output.push(operators.top());
-					cout << "Popping stack to output: " << operators.top() << endl;
 					if (!operators.empty())operators.pop();
 				}
 			}
 			operators.push(c);
-			cout << "Pushing token to stack: " << c << endl;
 		}
 		else if (c == '(')
 		{
 			operators.push(c);
-			cout << "Pushing token to stack: " << c << endl;
 		}
 		else if (c == ')')
 		{
 			while (!operators.empty() && operators.top() != '(')
 			{
 				output.push(operators.top());
-				cout << "Popping stack to output: " << operators.top() << endl;
 				if (!operators.empty())operators.pop();
 			}
 			if (!operators.empty())operators.pop(); //removes the opening parentheses
-			cout << "Pop stack" << endl;
 		}
 		++token;
 	}
@@ -71,13 +63,15 @@ int Infix_Eval::evaluate(string s)
 	return 0;
 }
 
-void Infix_Eval::printOutput()
+string Infix_Eval::getOutput()
 {
+	stringstream ss;
 	while (!output.empty())
 	{
-		cout << output.front() << " ";
+		ss << output.front();
 		output.pop();
 	}
+	return ss.str();
 }
 
 //Returns whether or not c is an operator
