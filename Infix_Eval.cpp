@@ -38,7 +38,7 @@ int Infix_Eval::evaluate(string s)
 		{
 			if (c == '^')
 			{
-				while (!operators.empty() && getPrecedence(c) < getPrecedence(operators.top()))
+				while (!operators.empty() && !operands.empty() && getPrecedence(c) < getPrecedence(operators.top()))
 				{
 					solveTop(operators, operands);
 					if (!operators.empty())operators.pop();
@@ -46,7 +46,7 @@ int Infix_Eval::evaluate(string s)
 			}
 			else
 			{
-				while (!operators.empty() && getPrecedence(c) <= getPrecedence(operators.top()))
+				while (!operators.empty() && !operands.empty() && getPrecedence(c) <= getPrecedence(operators.top()))
 				{
 					solveTop(operators, operands);
 					if (!operators.empty())operators.pop();
@@ -60,7 +60,7 @@ int Infix_Eval::evaluate(string s)
 		}
 		else if (c == ')')
 		{
-			while (!operators.empty() && operators.top() != '(')
+			while (!operands.empty() && !operators.empty() && operators.top() != '(')
 			{
 				solveTop(operators, operands);
 				if (!operators.empty())operators.pop();
@@ -69,7 +69,7 @@ int Infix_Eval::evaluate(string s)
 		}
 		++token;
 	}
-	while (!operators.empty())
+	while (!operators.empty() && !operands.empty())
 	{
 		solveTop(operators, operands);
 		if(!operators.empty())operators.pop();
@@ -87,15 +87,15 @@ void Infix_Eval::solveTop(stack<char>& operators, stack<double>& operands)
 		operands.pop();
 		double i2 = operands.top();
 		operands.pop();
+		cout << "Pushing " << binarySolve(i1, i2, c) << " to operands\n";
 		operands.push(binarySolve(i1, i2, c));
-		cout << "Doing operation:\t" << i1 << " " << c << " " << i2 << endl;
 	}
 	else
 	{
 		double i1 = operands.top();
 		operands.pop();
+		cout << "Pushing " << unarySolve(i1, c) << " to operands\n";
 		operands.push(unarySolve(i1, c));
-		cout << "Doing operation:\t" << c << " " << i1 << endl;
 	}
 }
 
@@ -228,6 +228,8 @@ int Infix_Eval::unarySolve(int i, char c)
 		return --i;
 	case '-':
 		return -i;
+	case '(':
+		return i;
 	}
 }
 // Not in use currently, put code into the postfix_eval function
@@ -239,13 +241,13 @@ double Infix_Eval::binarySolve(double i1, double i2, char c)
 	case '^':
 		return pow(i2, i1);
 	case '*':
-		return i1*i2;
+		return i2*i1;
 	case '/':
 		return i2 / i1;
 	case '%':
 		return (int)i2 % (int)i1;
 	case '+':
-		return i1 + i2;
+		return i2 + i1;
 	case '>':
 		return i2 > i1;
 	case '$':
@@ -255,12 +257,12 @@ double Infix_Eval::binarySolve(double i1, double i2, char c)
 	case '~':
 		return i2 <= i1;
 	case '`':
-		return i1 == i2;
+		return i2 == i1;
 	case ':':
-		return i1 != i2;
+		return i2 != i1;
 	case '&':
-		return i1 && i2;
+		return i2 && i1;
 	case '|':
-		return i1 || i2;
+		return i2 || i1;
 	}
 }
