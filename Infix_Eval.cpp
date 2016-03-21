@@ -2,7 +2,8 @@
 
 Infix_Eval::Infix_Eval()
 {
-	//Default constructor, not used at the moment
+	//Default constructor
+	string output = "";
 }
 
 int Infix_Eval::evaluate(string s)
@@ -15,9 +16,25 @@ int Infix_Eval::evaluate(string s)
 	while (token < s.length())
 	{
 		char c = s[token];
+		cout << "Token:\t" << c << endl;
 		if (isdigit(c))
 		{
-			output.push(c);
+			// Check for more digits
+			int number = 0;
+			while (token < s.length() && isdigit(c))
+			{
+				
+				number *= 10;
+				number += c - 48;
+				++token;
+				c = s[token];
+			}
+			--token;
+			c = s[token];
+
+			output+=to_string(number);
+			output += " ";
+			cout << "Adding token to output: " << number << endl;
 		}
 		else if (isOperator(c))
 		{
@@ -25,7 +42,12 @@ int Infix_Eval::evaluate(string s)
 			{
 				while (!operators.empty() && getPrecedence(c) < getPrecedence(operators.top()))
 				{
-					output.push(operators.top());
+					if (operators.top() != ')' && operators.top() != '(')
+					{
+						output += operators.top();
+						output += " ";
+					}
+					cout << "Popping stack to output: " << operators.top() << endl;
 					if (!operators.empty())operators.pop();
 				}
 			}
@@ -33,45 +55,61 @@ int Infix_Eval::evaluate(string s)
 			{
 				while (!operators.empty() && getPrecedence(c) <= getPrecedence(operators.top()))
 				{
-					output.push(operators.top());
+					if (operators.top() != ')' && operators.top() != '(')
+					{
+						output += operators.top();
+						output += " ";
+					}
+					cout << "Popping stack to output: " << operators.top() << endl;
 					if (!operators.empty())operators.pop();
 				}
 			}
 			operators.push(c);
+			cout << "Pushing token to stack: " << c << endl;
 		}
-		else if (c == '(')
+		
+		
+	else if (c == '(')
 		{
 			operators.push(c);
+			cout << "Pushing token to stack: " << c << endl;
 		}
 		else if (c == ')')
 		{
 			while (!operators.empty() && operators.top() != '(')
 			{
-				output.push(operators.top());
+				if (operators.top() != ')' && operators.top() != '(')
+				{
+					output += operators.top();
+					output += " ";
+				}
+				cout << "Popping stack to output: " << operators.top() << endl;
 				if (!operators.empty())operators.pop();
 			}
 			if (!operators.empty())operators.pop(); //removes the opening parentheses
+			cout << "Pop stack" << endl;
 		}
 		++token;
 	}
 	while (!operators.empty())
 	{
-		output.push(operators.top());
+		if (operators.top() != ')' && operators.top() != '(')
+		{
+			output += operators.top();
+			output += " ";
+		}
 		if(!operators.empty())operators.pop();
 	}
 
 	return 0;
 }
 
-string Infix_Eval::getOutput()
+string Infix_Eval::returnOutput()
 {
-	stringstream ss;
-	while (!output.empty())
-	{
-		ss << output.front();
-		output.pop();
-	}
-	return ss.str();
+
+	cout << "output is " << output << endl;
+	return output;
+	
 }
 
 //Returns whether or not c is an operator
@@ -85,6 +123,9 @@ int Infix_Eval::getPrecedence(char c)
 {
 	switch (c)
 	{
+	case '(':
+	case ')':
+		return 9;
 	case '!':
 	case '@':
 	case '#':
@@ -173,7 +214,7 @@ void Infix_Eval::replaceAll(string& str, const string& from, const string& to)
 		start_pos += to.length();
 	}
 }
-
+// Not in use, put code into the Postfix_Evaluator
 //Returns the solved unary expression of operation c on operand i
 int Infix_Eval::unarySolve(int i, char c)
 {
@@ -189,7 +230,7 @@ int Infix_Eval::unarySolve(int i, char c)
 		return -i;
 	}
 }
-
+// Not in use currently, put code into the postfix_eval function
 //Returns the solved binary expression of operation c on operands i1 and i2
 double Infix_Eval::binarySolve(double i1, double i2, char c)
 {

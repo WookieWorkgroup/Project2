@@ -3,11 +3,14 @@
 
 #include <iostream>
 #include <string>
-#include <sstream>
 #include <stack>
 #include <queue>
 #include <sstream>
 #include <cctype>
+#include <iostream>
+#include <fstream>
+#include "Syntax_Error.h"
+
 
 using namespace std;
 
@@ -15,7 +18,7 @@ class Infix_Eval {
 public:
 	Infix_Eval();
 	int evaluate(string s);
-	string getOutput();
+	string returnOutput();
 private:
 	bool isOperator(char c);
 	void replaceAll(string& str, const string& from, const string& to);
@@ -25,7 +28,7 @@ private:
 	int getPrecedence(char c);
 	const string OPERATORS = "!@#-^*/%+>$<~`:&|";
 	stack<char> operators;
-	queue<char> output;
+	string output;
 };
 
 #endif

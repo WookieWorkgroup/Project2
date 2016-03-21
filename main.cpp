@@ -24,39 +24,28 @@ using namespace std;
 
 int main()
 {
-	//STUFF THAT DANIEL ADDED
-	//READ THE README ON GITHUB!!!!!!!
+	//See Read Me
 	Infix_Eval ie;
-
-	ie.evaluate("3+4*5/6");
-
-	system("pause");
-	exit(0);
-	
-
-
-	//STUFF THAT WAS HERE BEFORE DANIEL EDITED...
-	// Variables for user input, converted postfix expression, final result, conversions
-	string user_input = "( 3 + 2 ) * 5 - 4";
+	string user_input = "(3+4)*12/6";
 	string post_exp = "";
 	int result = 0;
-	Infix_To_Postfix in_to_post;
 	Postfix_Evaluator post_eval;
 
-	// Show input, requires spaces to tokenize properly
-	cout << "Your input is " << user_input << endl << endl;
+	// show input, requires spaces to tokenize properly
+	cout << "your input is " << user_input << endl << endl;
 	system("pause");
 
-	// Convert to a postfix expression
- 	post_exp = in_to_post.convert(user_input);
+	// convert to a postfix expression
+	ie.evaluate(user_input);
+	post_exp = ie.returnOutput();
 	cout << endl;
-	cout << "Your postfix expression is " << post_exp << endl << endl;
+	cout << "your postfix expression is " << post_exp << endl << endl;
 	system("pause");
 
-	// Eval the postfix
+	// eval the postfix
 	result = post_eval.eval(post_exp);
 	cout << endl;
-	cout << "Your result is " << result << endl << endl;
+	cout << "your result is " << result << endl << endl;
 	system("pause");
 
 }
