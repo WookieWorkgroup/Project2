@@ -20,6 +20,7 @@ public:
 	int evaluate(string s);
 	string returnOutput();
 private:
+	void solveTop(stack<char>& operators, stack<double>& operands);
 	bool isBinaryOp(char c);
 	bool isOperator(char c);
 	void replaceAll(string& str, const string& from, const string& to);
@@ -30,7 +31,7 @@ private:
 	const string OPERATORS = "!@#-^*/%+>$<~`:&|";
 	const string BINARY_OPERATORS = "^* / %+>$<~`:& | ";
 	stack<char> operators;
-	stack<int> operands;
+	stack<double> operands;
 	string output;
 };
 
