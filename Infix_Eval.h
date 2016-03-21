@@ -20,6 +20,7 @@ public:
 	int evaluate(string s);
 	string returnOutput();
 private:
+	bool isBinaryOp(char c);
 	bool isOperator(char c);
 	void replaceAll(string& str, const string& from, const string& to);
 	string convertOperatorsToSingleChars(string s);
@@ -27,7 +28,9 @@ private:
 	double binarySolve(double i1, double i2, char c);
 	int getPrecedence(char c);
 	const string OPERATORS = "!@#-^*/%+>$<~`:&|";
+	const string BINARY_OPERATORS = "^* / %+>$<~`:& | ";
 	stack<char> operators;
+	stack<int> operands;
 	string output;
 };
 

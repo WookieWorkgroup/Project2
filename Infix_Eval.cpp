@@ -11,7 +11,8 @@ int Infix_Eval::evaluate(string s)
 	//The algorithm used is Edsger Dijkstra's "Shunting-Yard Algorithm" and is
 	//copied from the wikipedia page.
 	//See https://en.wikipedia.org/wiki/Shunting-yard_algorithm for more info
-
+	s = convertOperatorsToSingleChars(s);
+	cout << "Converted string:\t" << s << endl;
 	int token = 0;
 	while (token < s.length())
 	{
@@ -33,6 +34,7 @@ int Infix_Eval::evaluate(string s)
 			c = s[token];
 
 			output+=to_string(number);
+			operands.push(number);
 			output += " ";
 			cout << "Adding token to output: " << number << endl;
 		}
@@ -47,6 +49,21 @@ int Infix_Eval::evaluate(string s)
 						output += operators.top();
 						output += " ";
 					}
+					char c = operators.top();
+					if (isBinaryOp(c))
+					{
+						int i1 = operands.top();
+						operands.pop();
+						int i2 = operands.top();
+						operands.pop();
+						operands.push(binarySolve(i1, i2, c));
+					}
+					else
+					{
+						int i1 = operands.top();
+						operands.pop();
+						operands.push(unarySolve(i1, c));
+					}
 					cout << "Popping stack to output: " << operators.top() << endl;
 					if (!operators.empty())operators.pop();
 				}
@@ -60,16 +77,30 @@ int Infix_Eval::evaluate(string s)
 						output += operators.top();
 						output += " ";
 					}
+					char c = operators.top();
+					if (isBinaryOp(c))
+					{
+						int i1 = operands.top();
+						operands.pop();
+						int i2 = operands.top();
+						operands.pop();
+						operands.push(binarySolve(i1, i2, c));
+					}
+					else
+					{
+						int i1 = operands.top();
+						operands.pop();
+						operands.push(unarySolve(i1, c));
+					}
 					cout << "Popping stack to output: " << operators.top() << endl;
 					if (!operators.empty())operators.pop();
 				}
 			}
+			cout << "Operands top is\t" << operands.top() << endl;
 			operators.push(c);
 			cout << "Pushing token to stack: " << c << endl;
 		}
-		
-		
-	else if (c == '(')
+		else if (c == '(')
 		{
 			operators.push(c);
 			cout << "Pushing token to stack: " << c << endl;
@@ -98,10 +129,25 @@ int Infix_Eval::evaluate(string s)
 			output += operators.top();
 			output += " ";
 		}
+		char c = operators.top();
+		if (isBinaryOp(c))
+		{
+			int i1 = operands.top();
+			operands.pop();
+			int i2 = operands.top();
+			operands.pop();
+			operands.push(binarySolve(i1, i2, c));
+		}
+		else
+		{
+			int i1 = operands.top();
+			operands.pop();
+			operands.push(unarySolve(i1, c));
+		}
 		if(!operators.empty())operators.pop();
 	}
 
-	return 0;
+	return operands.top();
 }
 
 string Infix_Eval::returnOutput()
@@ -110,6 +156,11 @@ string Infix_Eval::returnOutput()
 	cout << "output is " << output << endl;
 	return output;
 	
+}
+
+bool Infix_Eval::isBinaryOp(char c)
+{
+	return BINARY_OPERATORS.find(c) != string::npos;
 }
 
 //Returns whether or not c is an operator
