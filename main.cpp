@@ -29,7 +29,7 @@ int main()
 {
 	Infix_Eval ie;
 	string user_input = "";
-	int result = -10000;
+	int result = 0;
 	bool exp_entered = false;
 
 	// Call the menu for entering calculations
