@@ -72,7 +72,7 @@ void displayMenu(Infix_Eval& ie, string& user_input, int& result, bool& exp_ente
 	// What happens when making a choice
 	switch (userSelection)
 	{
-		// Give me poly1
+		// Give me an expression
 	case 1:
 		cout << endl << endl;
 		cout << "Enter the Infix Expression: ";
@@ -97,7 +97,7 @@ void displayMenu(Infix_Eval& ie, string& user_input, int& result, bool& exp_ente
 		cout << endl << endl;
 		break;
 
-		
+	// Show the last expression entered
 	case 2:
 		cout << endl << endl;
 		if (!exp_entered) cout << "Expression is empty, please enter a value before you add\n";
@@ -107,7 +107,7 @@ void displayMenu(Infix_Eval& ie, string& user_input, int& result, bool& exp_ente
 		}
 		break;
 
-		// Show what user entered for poly2
+		// Show the last result
 	case 3:
 		cout << endl << endl;
 		if (!exp_entered) cout << "No expression found, please enter an Infix Expression\n";
@@ -115,7 +115,7 @@ void displayMenu(Infix_Eval& ie, string& user_input, int& result, bool& exp_ente
 		break;
 
 
-		// Reset all polys
+		// Reset all input and results
 	case 4:
 		result = 0;
 		exp_entered = false;
