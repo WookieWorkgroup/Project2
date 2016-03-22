@@ -1,8 +1,8 @@
 #pragma once
 #include<iostream>;
 
-#ifndef Operatorinspect_H
-#define Operatorinspect_H
+#ifndef INPUTINSPECT_H
+#define INPUTINSPECT_H
 
 #include "Error.h"
 #include <string>
@@ -10,7 +10,7 @@
 using namespace std;
 
 /* Inspect if the input is correct. */
-class Operatorinspect
+class Inputinspect
 {
 private:
 
@@ -22,8 +22,10 @@ private:
 public:
 
 	//Constructors
-	Operatorinspect() { ; }; //Default constructor
+	Inputinspect() { ; }; //Default constructor
 
+	bool Inputinspect::isOperator(char ch) const;
+	string Inputinspect::ReadInput(string input, string output, vector<int> indices, string operators);
 							 //Member functions
 	void SplitOperator(const string& text, const vector<int>& indices); //Split the operator into bracket_back, binaryoperator, and bracket_front spaces.
 	void SplitFrontOperator(const string& text, const vector<int>& indices); //Split the operator in front of all the operands (if the expression has).

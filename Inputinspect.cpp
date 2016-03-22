@@ -1,10 +1,64 @@
-#include "Operatorinspect.h"
+#include "Inputinspect.h"
+#include <cctype>
 
-/* Implementation of class Operator_Checker */
-void Operatorinspect::SplitOperator(const std::string& text, const std::vector<int>& indices)
+
+/* Implementation of class Inputinspect */
+bool Inputinspect::isOperator(char ch) const
+{
+	return (ch == '!') || (ch == '+') || (ch == '-') || (ch == '^') || (ch == '*') || (ch == '/') || (ch == '%') || (ch == '>') || (ch == '<') || (ch == '=') || (ch == '&') || (ch == '|') || (ch == '(') || (ch == ')');
+}
+
+string Inputinspect::ReadInput (string input, string output, vector<int> indices, string operators)
+{
+	if (input.empty())
+		 Error("The input is empty!", -1);
+	int i = 0;
+	while (input[i] == ' ' || input[i] == '\t' || input[i] == '\n')
+		i++;
+	for (i; i <= input.size; i++)
+	{
+		if (isdigit(input[i]))
+		{
+			output.push_back(input[i]);  
+			continue;
+		}
+		if (isOperator(input[i]))
+		{
+			output.push_back(input[i]);
+			indices.push_back(i);
+			operators.push_back(input[i]);
+			continue;
+		}
+		if (input[i] == ' ' || input[i] == '\t')
+		{
+			int numofspace;
+			while (i <= input.size)
+			{
+				
+				if (input[i + 1] == ' ' || input[i + 1] == '\t')
+					i++;
+
+				if (isdigit(input[i - 1]) && isdigit(input[i + 1]))
+				Error("Two operands in a row", i+1).Report();
+			continue;
+
+			}
+			
+		}
+
+
+
+	}
+
+
+
+}
+
+
+void Inputinspect::SplitOperator(const string& text, const vector<int>& indices)
 {
 	if (text.empty())
-		throw exception("The operator string is empty!");
+		return;
 
 	int Indicator = 0; //0 means "in brac_back space", 1 "in binoper", 2 "in brac_front space".
 
@@ -142,10 +196,10 @@ void Operatorinspect::SplitOperator(const std::string& text, const std::vector<i
 	}
 }
 
-void Operatorinspect::SplitFrontOperator(const std::string& text, const std::vector<int>& indices)
+void Inputinspect::SplitFrontOperator(const string& text, const vector<int>& indices)
 {
 	if (text.empty())
-		throw exception("The operator string is empty!");
+		return;
 
 	for (int i = 0; i < indices.size(); i++)
 	{
@@ -213,10 +267,10 @@ void Operatorinspect::SplitFrontOperator(const std::string& text, const std::vec
 	}
 }
 
-void Operatorinspect::SplitBackOperator(const std::string& text, const std::vector<int>& indices)
+void Inputinspect::SplitBackOperator(const string& text, const vector<int>& indices)
 {
 	if (text.empty())
-		throw exception("The operator string is empty!");
+		return;
 
 	for (int i = 0; i < indices.size(); i++)
 	{

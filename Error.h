@@ -17,10 +17,8 @@ private:
 public:
 
 	//Constructors
-	Error() :index(-1) { ; } //Default constructor
-	Error(const string& theMessage, int theIndex) :message(theMessage), index(theIndex) { ; } //Defining constructor
+	Error(const string& theMessage, int theIndex) :message(theMessage), index(theIndex) {} //Defining constructor
 
-																											//Member function
 	void Report() const; //Report the error in the main program.
 };
 
