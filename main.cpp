@@ -1,11 +1,13 @@
 ﻿/*********************************************
 
 Name:			Joshua Neustrom, jwnf7b@mail.umkc.edu, 10227835
+				Daniel Mitchel
+				Chen Wang, cwrp3@mail.umkc.edu, 16208411
 
 Course:			CS303
 Program:		Project2 (Wookie Workgroup)
 Team:			Team1  
-Due Date:		March 12, 2016
+Due Date:		March 25, 2016
 Description:	Infix Parser, uses stacks and converts expressions to postfix for evaluation
 Inputs:			User given polynomial as a string
 Outputs:		Result as an int
