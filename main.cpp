@@ -22,17 +22,117 @@ Outputs:		Result as an int
 
 using namespace std;
 
+// Functions for the menu
+void displayMenu(Infix_Eval& ie, string& user_input, int& result, bool& exp_entered);
+
 int main()
 {
-	//Create the Infix_Eval object and a string to be used as input
 	Infix_Eval ie;
-	string user_input = "4<=4";
+	string user_input = "";
+	int result = -10000;
+	bool exp_entered = false;
 
-	//Shows the user's input
-	cout << "Your input:\t" << user_input << endl << endl;
-
-	//Prints out the result of the Infix_Eval::evaluate function on our given string
-	cout << "Infix_Eval result:\t" << ie.evaluate(user_input) << endl;
-	system("pause");
+	// Call the menu for entering calculations
+	while (true)
+	{
+		displayMenu(ie, user_input, result, exp_entered);
+	}
 }
+
+
+// A glorious menu and user interface
+void displayMenu(Infix_Eval& ie, string& user_input, int& result, bool& exp_entered)
+{
+	
+	
+	
+	// My choices
+	int userSelection(-1);
+	cout << "Please select one: \n\n";
+	cout << "1:\tEnter an Infix Expression such as (3+4)/20 to calculate the result\n";
+	cout << "2:\tDisplay Expression Entered One\n";
+	cout << "3:\tDisplay Result\n";
+	cout << "4:\tClear entries\n";
+	cout << "5:\tExit\n";
+	
+
+	// Filter input so program accepts single digits only
+	while (!(cin >> userSelection))
+	{
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+		// Warn the user about an improper input
+		cout << endl << "Single digits only" << endl;
+		cout << "Make another selection: ";
+	}
+
+	// What happens when making a choice
+	switch (userSelection)
+	{
+		// Give me poly1
+	case 1:
+		cout << endl << endl;
+		cout << "Enter the Infix Expression: ";
+		cin.ignore();
+		getline(cin, user_input);
+
+		// See if the polynomial is poperly entered
+		try{
+			result = ie.evaluate(user_input);
+			cout << "Expression successfully entered\n";
+			exp_entered = true;
+			cout << "Result is: " << result << endl;
+		}
+
+		// Bad input, try again
+		catch (exception e)
+		{
+			cout << endl << endl;
+			cout << "Incorrect formatting entered, use formatting like 3^3+1" << endl;
+		}
+
+		cout << endl << endl;
+		break;
+
+		
+	case 2:
+		cout << endl << endl;
+		if (!exp_entered) cout << "Expression is empty, please enter a value before you add\n";
+		else
+		{
+			cout << "You entered: " << user_input << endl;
+		}
+		break;
+
+		// Show what user entered for poly2
+	case 3:
+		cout << endl << endl;
+		if (!exp_entered) cout << "No expression found, please enter an Infix Expression\n";
+		else cout << "Result of the last calculation was " << result << endl;
+		break;
+
+
+		// Reset all polys
+	case 4:
+		result = 0;
+		exp_entered = false;
+		user_input = "";
+		cout << endl << endl;
+		cout << "Entries cleared\n\n";
+		break;
+
+
+		// Bah bye
+	case 5:
+		exit(0);
+
+		// Bad choice, try that again
+	default:
+		cout << endl << endl;
+		cout << "Invalid menu option" << endl;
+		break;
+	}
+}
+
 
