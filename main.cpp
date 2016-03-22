@@ -24,29 +24,15 @@ using namespace std;
 
 int main()
 {
-	//See Read Me
+	//Create the Infix_Eval object and a string to be used as input
 	Infix_Eval ie;
-	string user_input = "(3+4)*12/6";
-	string post_exp = "";
-	int result = 0;
-	Postfix_Evaluator post_eval;
+	string user_input = "4<=4";
 
-	// show input, requires spaces to tokenize properly
-	cout << "your input is " << user_input << endl << endl;
+	//Shows the user's input
+	cout << "Your input:\t" << user_input << endl << endl;
+
+	//Prints out the result of the Infix_Eval::evaluate function on our given string
+	cout << "Infix_Eval result:\t" << ie.evaluate(user_input) << endl;
 	system("pause");
-
-	// convert to a postfix expression
-	ie.evaluate(user_input);
-	post_exp = ie.returnOutput();
-	cout << endl;
-	cout << "your postfix expression is " << post_exp << endl << endl;
-	system("pause");
-
-	// eval the postfix
-	result = post_eval.eval(post_exp);
-	cout << endl;
-	cout << "your result is " << result << endl << endl;
-	system("pause");
-
 }
 
