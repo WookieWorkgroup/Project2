@@ -18,8 +18,6 @@ Outputs:		Result as an int
 #include <string> 
 #include <stack>
 #include "Syntax_Error.h"
-#include "Postfix_Evaluator.h"
-#include "Infix_To_Postfix.h"
 #include "Infix_Eval.h"
 
 using namespace std;
