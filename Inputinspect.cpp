@@ -8,49 +8,81 @@ bool Inputinspect::isOperator(char ch) const
 	return (ch == '!') || (ch == '+') || (ch == '-') || (ch == '^') || (ch == '*') || (ch == '/') || (ch == '%') || (ch == '>') || (ch == '<') || (ch == '=') || (ch == '&') || (ch == '|') || (ch == '(') || (ch == ')');
 }
 
-string Inputinspect::ReadInput (string input, string output, vector<int> indices, string operators)
+string Inputinspect::OptimizeInput(string input)
 {
+	int balofBracket = 0;
 	if (input.empty())
-		 Error("The input is empty!", -1);
-	int i = 0;
-	while (input[i] == ' ' || input[i] == '\t' || input[i] == '\n')
-		i++;
-	for (i; i <= input.size; i++)
+		Error("The input is empty!", -1);	
+	string output;
+	int k = 0;
+	while (input[k] == ' ' || input[k] == '\t' || input[k] == '\n')
+	{
+		k++;
+		Pairs[k].first.push_back(input[k]);
+		Pairs[k].second.push_back(k);
+	}
+	for (int i= k; i < input.size(); i++)
 	{
 		if (isdigit(input[i]))
 		{
-			output.push_back(input[i]);  
+			output.push_back(input[i]);
+			Pairs[k].first.push_back(input[k]);
+			Pairs[i].second.push_back(i);
 			continue;
 		}
 		if (isOperator(input[i]))
 		{
+			if (input[i] == '(')
+				balofBracket++;
+			if (input[i] == ')')
+				balofBracket--;
+			if (balofBracket < 0)
+				Error("There is one more closing parenthesis than opening parethesis", i);
 			output.push_back(input[i]);
-			indices.push_back(i);
-			operators.push_back(input[i]);
+			Pairs[k].first.push_back(input[k]);
+			Pairs[i].second.push_back(i);
 			continue;
 		}
-		if (input[i] == ' ' || input[i] == '\t')
+		if (input[i] == ' ')
 		{
-			int numofspace;
-			while (i <= input.size)
+			if (isdigit(input[i - 1]))
 			{
-				
-				if (input[i + 1] == ' ' || input[i + 1] == '\t')
-					i++;
-
-				if (isdigit(input[i - 1]) && isdigit(input[i + 1]))
-				Error("Two operands in a row", i+1).Report();
-			continue;
-
+				while (i < input.size())
+				{
+					if (input[i + 1] == ' ')
+					{
+						i++;
+						Pairs[k].first.push_back(input[k]);
+						Pairs[i].second.push_back(i);
+					}
+					else
+						break;
+				}
+				if (i != (input.size()-1))
+				{
+					if (isdigit(input[i + 1]))
+						Error("Two operands in a row", i + 1).Report();
+				}
 			}
-			
 		}
-
-
-
 	}
+	if (balofBracket > 0)
+		Error("There are more opening parenthesis than closing parenthesis", -1);
+	return output;
+}
 
 
+void Inputinspect::InspectOperator()
+{
+	for (int j = 0; j < Pairs.size(); j++)
+	{
+		if (j == 0)
+			this->SplitFrontOperator(Pairs[j].first, Pairs[j].second);
+		else if (j == Pairs.size() - 1)
+			this->SplitBackOperator(Pairs[j].first, Pairs[j].second);
+		else
+			this->SplitOperator(Pairs[j].first, Pairs[j].second);
+	}
 
 }
 
@@ -196,6 +228,7 @@ void Inputinspect::SplitOperator(const string& text, const vector<int>& indices)
 	}
 }
 
+
 void Inputinspect::SplitFrontOperator(const string& text, const vector<int>& indices)
 {
 	if (text.empty())
@@ -282,4 +315,12 @@ void Inputinspect::SplitBackOperator(const string& text, const vector<int>& indi
 		else
 			Error("operator cannot appear in such position", indices[i]).Report();
 	}
+}
+
+
+string Inputinspect::Processinput(string input)
+{
+	OptimizeInput(input);
+	InspectOperator();
+	return OptimizeInput(input);
 }

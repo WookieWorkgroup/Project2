@@ -18,9 +18,9 @@ Outputs:		Result as an int
 #include <string> 
 #include <stack>
 #include "Syntax_Error.h"
-#include "Postfix_Evaluator.h"
-#include "Infix_To_Postfix.h"
 #include "Infix_Eval.h"
+#include "Inputinspect.h"
+#include "Error.h"
 
 using namespace std;
 
@@ -31,7 +31,7 @@ int main()
 {
 	Infix_Eval ie;
 	string user_input = "";
-	int result = -10000;
+	int result = 0;
 	bool exp_entered = false;
 
 	// Call the menu for entering calculations
@@ -72,7 +72,7 @@ void displayMenu(Infix_Eval& ie, string& user_input, int& result, bool& exp_ente
 	// What happens when making a choice
 	switch (userSelection)
 	{
-		// Give me poly1
+		// Give me an expression
 	case 1:
 		cout << endl << endl;
 		cout << "Enter the Infix Expression: ";
@@ -81,6 +81,8 @@ void displayMenu(Infix_Eval& ie, string& user_input, int& result, bool& exp_ente
 
 		// See if the polynomial is poperly entered
 		try{
+			Inputinspect Ins;
+			Ins.Processinput(user_input);
 			result = ie.evaluate(user_input);
 			cout << "Expression successfully entered\n";
 			exp_entered = true;
@@ -97,7 +99,7 @@ void displayMenu(Infix_Eval& ie, string& user_input, int& result, bool& exp_ente
 		cout << endl << endl;
 		break;
 
-		
+	// Show the last expression entered
 	case 2:
 		cout << endl << endl;
 		if (!exp_entered) cout << "Expression is empty, please enter a value before you add\n";
@@ -107,7 +109,7 @@ void displayMenu(Infix_Eval& ie, string& user_input, int& result, bool& exp_ente
 		}
 		break;
 
-		// Show what user entered for poly2
+		// Show the last result
 	case 3:
 		cout << endl << endl;
 		if (!exp_entered) cout << "No expression found, please enter an Infix Expression\n";
@@ -115,7 +117,7 @@ void displayMenu(Infix_Eval& ie, string& user_input, int& result, bool& exp_ente
 		break;
 
 
-		// Reset all polys
+		// Reset all input and results
 	case 4:
 		result = 0;
 		exp_entered = false;
