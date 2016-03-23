@@ -84,8 +84,7 @@ void displayMenu(Infix_Eval& ie, string& user_input, int& result, bool& exp_ente
 		try{
 			Inputinspect Ins;
 			Ins.Processinput(user_input);
-			ie.evaluate(user_input);
-			result = ie.returnOutput;
+			result = ie.evaluate(user_input);
 			cout << "Expression successfully entered\n";
 			exp_entered = true;
 			cout << "Result is: " << result << endl;
@@ -120,7 +119,6 @@ void displayMenu(Infix_Eval& ie, string& user_input, int& result, bool& exp_ente
 		}
 		else
 		{
-			result = ie.returnOutput;
 			cout << "Result of the last calculation was " << result << endl;
 		}
 		break;

@@ -3,7 +3,6 @@
 Infix_Eval::Infix_Eval()
 {
 	//Default constructor
-	string output = "";
 }
 
 int Infix_Eval::evaluate(string s)
@@ -161,15 +160,6 @@ void Infix_Eval::solveTop(stack<char>& operators, stack<double>& operands)
 	
 }
 
-
-// Show the output and return as a string
-string Infix_Eval::returnOutput()
-{
-
-	cout << "output is " << output << endl;
-	return output;
-	
-}
 
 
 // Calcualation for binary operator

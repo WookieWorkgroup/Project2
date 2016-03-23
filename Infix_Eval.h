@@ -23,9 +23,6 @@ public:
 	// Main expression evaluation function
 	int evaluate(string s);
 
-	// Give answer to the requester as a string
-	string returnOutput();
-
 private:
 
 	// Calculation functions
@@ -45,7 +42,6 @@ private:
 	const string BINARY_OPERATORS = "^* / %+->$<~`:& | ";
 	stack<char> operators;
 	stack<double> operands;
-	string output;
 };
 
 #endif
