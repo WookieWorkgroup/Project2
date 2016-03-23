@@ -12,22 +12,21 @@ string Inputinspect::OptimizeInput(string input)
 {
 	int balofBracket = 0;
 	if (input.empty())
-		Error("The input is empty!", -1);	
+		Error_Report("The input is empty!", -1);
 	string output;
 	int k = 0;
 	while (input[k] == ' ' || input[k] == '\t' || input[k] == '\n')
 	{
 		k++;
-		Pairs[k].first.push_back(input[k]);
-		Pairs[k].second.push_back(k);
 	}
-	for (int i= k; i < input.size(); i++)
+	if(k==input.size())
+		Error_Report("The input is empty!", -1);
+
+	for (int i = k; i < input.size(); i++)
 	{
 		if (isdigit(input[i]))
 		{
 			output.push_back(input[i]);
-			Pairs[k].first.push_back(input[k]);
-			Pairs[i].second.push_back(i);
 			continue;
 		}
 		if (isOperator(input[i]))
@@ -37,10 +36,8 @@ string Inputinspect::OptimizeInput(string input)
 			if (input[i] == ')')
 				balofBracket--;
 			if (balofBracket < 0)
-				Error("There is one more closing parenthesis than opening parethesis", i);
+				Error_Report("There is one more closing parenthesis than opening parethesis", i);
 			output.push_back(input[i]);
-			Pairs[k].first.push_back(input[k]);
-			Pairs[i].second.push_back(i);
 			continue;
 		}
 		if (input[i] == ' ')
@@ -52,47 +49,32 @@ string Inputinspect::OptimizeInput(string input)
 					if (input[i + 1] == ' ')
 					{
 						i++;
-						Pairs[k].first.push_back(input[k]);
-						Pairs[i].second.push_back(i);
 					}
 					else
 						break;
 				}
-				if (i != (input.size()-1))
+				if (i != (input.size() - 1))
 				{
 					if (isdigit(input[i + 1]))
-						Error("Two operands in a row", i + 1).Report();
+						Error_Report("Two operands in a row", i + 1);
 				}
 			}
 		}
 	}
 	if (balofBracket > 0)
-		Error("There are more opening parenthesis than closing parenthesis", -1);
+		Error_Report("There are more opening parenthesis than closing parenthesis", -1);
 	return output;
 }
 
-
-void Inputinspect::InspectOperator()
-{
-	for (int j = 0; j < Pairs.size(); j++)
-	{
-		if (j == 0)
-			this->SplitFrontOperator(Pairs[j].first, Pairs[j].second);
-		else if (j == Pairs.size() - 1)
-			this->SplitBackOperator(Pairs[j].first, Pairs[j].second);
-		else
-			this->SplitOperator(Pairs[j].first, Pairs[j].second);
-	}
-
-}
-
-
-void Inputinspect::SplitOperator(const string& text, const vector<int>& indices)
+void Inputinspect::InspectOperator(string text)
 {
 	if (text.empty())
 		return;
 
-	int Indicator = 0; //0 means "in brac_back space", 1 "in binoper", 2 "in brac_front space".
+	int Indicator = 2;
+	if (isdigit(text[0]))
+		Indicator = 1;
+	//0 means closing bracket, 1 means binory operator, 2 means opening bracket and unary operator.
 
 	for (int a = 0; a < text.size(); a++)
 	{
@@ -100,75 +82,67 @@ void Inputinspect::SplitOperator(const string& text, const vector<int>& indices)
 		{
 			if (Indicator == 0)
 			{
-				brac_back += text[a];
 				continue;
 			}
 			else
-				Error("There shouldn't be closing parenthesis in such position", indices[a]).Report();
+				Error_Report("There shouldn't be closing parenthesis in such position", a);
 		}
 
 		if (Indicator == 0) Indicator = 1;
 
 		if ((text[a] == '^') || (text[a] == '*') || (text[a] == '/') || (text[a] == '%'))
 		{
-			if (Indicator == 1 && binoper.empty())
+			if (Indicator == 1)
 			{
-				binoper += text[a];
 				Indicator = 2;
 				continue;
 			}
 			else
-				Error("Operator cannot appear in such position", indices[a]).Report();
+				Error_Report("Operator cannot appear in such position", a);
 		}
 
 		if ((text[a] == '=') || (text[a] == '&') || (text[a] == '|'))
 		{
-			if ((Indicator == 1) && binoper.empty() && (a < text.size() - 1))
+			if ((Indicator == 1) && (a < text.size() - 1))
 			{
 				if (text[a + 1] == text[a])
 				{
-					binoper += text[a];
 					a++;
-					binoper += text[a];
 					Indicator = 2;
 					continue;
 				}
 				else
-					Error("Incomplete operator", indices[a]).Report();
+					Error_Report("Incomplete operator", a);
 			}
 			else
-				Error("Operator cannot appear in such position", indices[a]).Report();
+				Error_Report("Operator cannot appear in such position", a);
 		}
 
 		if (text[a] == '!')
 		{
 			if (Indicator == 2)
 			{
-				brac_front += text[a];
 				continue;
 			}
-			else if ((Indicator == 1) && (binoper.empty()) && (a < text.size() - 1))
+			else if ((Indicator == 1) && (a < text.size() - 1))
 			{
 				if (text[a + 1] == '=')
 				{
-					binoper += text[a];
 					a++;
-					binoper += text[a];
 					Indicator = 2;
 					continue;
 				}
 				else
-					Error("Incomplete operator", indices[a]).Report();
+					Error_Report("Incomplete operator", a);
 			}
 			else
-				Error("Operator cannot appear in such position", indices[a]).Report();
+				Error_Report("Operator cannot appear in such position", a);
 		}
 
 		if ((text[a] == '+') || (text[a] == '-'))
 		{
-			if ((Indicator == 1) && binoper.empty())
+			if (Indicator == 1)
 			{
-				binoper += text[a];
 				Indicator = 2;
 				continue;
 			}
@@ -176,151 +150,74 @@ void Inputinspect::SplitOperator(const string& text, const vector<int>& indices)
 			{
 				if ((a < text.size() - 1) && (text[a + 1] == text[a]))
 				{
-					brac_front += text[a];
 					a++;
-					brac_front += text[a];
 					continue;
 				}
 				else
 				{
-					if (!brac_front.empty() && brac_front[brac_front.size() - 1] == '(')
+					if ((a < text.size() - 1) && (text[a + 1] == '('))
 					{
-						brac_front += text[a];
+						a++;
 						continue;
 					}
 					else
-						Error("Two binary operators in a row", indices[a]).Report();
+						Error_Report("Two binary operators in a row", a);
 				}
 			}
 			else
-				Error("Operator cannot appear in such position", indices[a]).Report();
+				Error_Report("Operator cannot appear in such position", a);
 		}
 
 		if ((text[a] == '>') || (text[a] == '<'))
 		{
-			if ((Indicator == 1) && binoper.empty())
+			if (Indicator == 1)
 			{
 				if ((a < text.size() - 1) && (text[a + 1] == '='))
 				{
-					binoper += text[a];
 					a++;
-					binoper += text[a];
+					continue;
+					Indicator == 2;
 				}
 				else
-					binoper += text[a];
-
-				continue;
+				{
+					continue;
+					Indicator == 2;
+				}
 			}
 			else
-				Error("Operator cannot appear in such position", indices[a]).Report();
+				Error_Report("Operator cannot appear in such position", a);
 		}
 
 		if (text[a] == '(')
 		{
 			if (Indicator == 2)
 			{
-				brac_front += text[a];
-				continue;
-			}
-			else
-				Error("Opening parenthesis cannot appear in such position", indices[a]).Report();
-		}
-	}
-}
-
-
-void Inputinspect::SplitFrontOperator(const string& text, const vector<int>& indices)
-{
-	if (text.empty())
-		return;
-
-	for (int i = 0; i < indices.size(); i++)
-	{
-		if ((text[i] == '|') || (text[i] == '&') || (text[i] == '=') || (text[i] == '<') || (text[i] == '>') || (text[i] == '%') || (text[i] == '/') || (text[i] == '*') || (text[i] == '^'))
-			Error("No operand before a binary operator", indices[i]).Report();
-
-		if (text[i] == ')')
-			Error("Expression cannot start with a closing parenthesis", indices[i]).Report();
-
-		if ((text[i] == '+') || (text[i] == '-'))
-		{
-			if (i < text.size() - 1)
-			{
-				if (text[i + 1] == text[i])
-				{
-					brac_front += text[i];
-					i++;
-					brac_front += text[i];
+				if ((a < text.size() - 1) && (text[a + 1] == '('))
 					continue;
-				}
 				else
 				{
-					if (brac_front.empty())
-					{
-						brac_front += text[i];
-						continue;
-					}
-					else
-					{
-						if (brac_front[brac_front.size() - 1] == '(')
-						{
-							brac_front += text[i];
-							continue;
-						}
-						else
-							Error("Operator cannot appear in such position", indices[i]).Report();
-					}
+					Indicator = 0;
+					continue;
 				}
 			}
 			else
-			{
-				if (brac_front.empty())
-				{
-					brac_front += text[i];
-					continue;
-				}
-				else
-				{
-					if (brac_front[brac_front.size() - 1] == '(')
-					{
-						brac_front += text[i];
-						continue;
-					}
-					else
-						Error("Operator cannot appear in such position", indices[i]).Report();
-				}
-			}
-		}
-
-		if ((text[i] == '!') || (text[i] == '('))
-		{
-			brac_front += text[i];
-			continue;
+				Error_Report("Opening parenthesis cannot appear in such position", a);
 		}
 	}
 }
-
-void Inputinspect::SplitBackOperator(const string& text, const vector<int>& indices)
-{
-	if (text.empty())
-		return;
-
-	for (int i = 0; i < indices.size(); i++)
-	{
-		if (text[i] == ')')
-		{
-			brac_back += text[i];
-			continue;
-		}
-		else
-			Error("operator cannot appear in such position", indices[i]).Report();
-	}
-}
-
 
 string Inputinspect::Processinput(string input)
 {
-	OptimizeInput(input);
-	InspectOperator();
-	return OptimizeInput(input);
+	string output=OptimizeInput(input);
+	InspectOperator(output);
+	return output;
+}
+
+void Inputinspect::Error_Report(const string& theMessage, int theIndex)
+{
+	cerr << message << " @ char " << ((index == -1) ? "N/A" : to_string(index)) << endl << endl;
+	cerr << "Program exited.\n\n";
+
+	system("pause");
+	exit(-1);
 }

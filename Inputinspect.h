@@ -4,7 +4,6 @@
 #define INPUTINSPECT_H
 
 #include<iostream>
-#include "Error.h"
 #include <string>
 #include <vector>
 using namespace std;
@@ -14,23 +13,18 @@ class Inputinspect
 {
 private:
 
-	//Data fields
-	string brac_front;
-	string binoper;
-	string brac_back;
-	vector < pair<string, vector<int>>> Pairs;
+	//Error message
+	string message;
+	int index;
+
 public:
-
 	//Constructors
-	Inputinspect() { ; }; //Default constructor
-
-	bool isOperator(char ch) const;	 //Member functions
-	string OptimizeInput(string input);
-	void InspectOperator();						
-	void SplitOperator(const string& text, const vector<int>& indices); //Split the operator into bracket_back, binaryoperator, and bracket_front spaces.
-	void SplitFrontOperator(const string& text, const vector<int>& indices); //Split the operator in front of all the operands (if the expression has).
-	void SplitBackOperator(const string& text, const vector<int>& indices); //Split the operator after all the operands.
-	string Processinput(string input);
+	Inputinspect() { ; };					 //Default constructor
+	bool isOperator(char ch) const;			 //Judge if the character is a operator
+	string OptimizeInput(string input);		 //Inspect the space error and remove the space	
+	void InspectOperator(string text);		 //inspect the operator error
+	string Processinput(string input);		 //the wrapper function
+	void Error_Report(const string& theMessage, int theIndex);		//Error report function
 };
 
 #endif
