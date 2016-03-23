@@ -84,7 +84,8 @@ void displayMenu(Infix_Eval& ie, string& user_input, int& result, bool& exp_ente
 		try{
 			Inputinspect Ins;
 			Ins.Processinput(user_input);
-			result = ie.evaluate(user_input);
+			ie.evaluate(user_input);
+			result = ie.returnOutput;
 			cout << "Expression successfully entered\n";
 			exp_entered = true;
 			cout << "Result is: " << result << endl;
@@ -113,8 +114,15 @@ void displayMenu(Infix_Eval& ie, string& user_input, int& result, bool& exp_ente
 		// Show the last result
 	case 3:
 		cout << endl << endl;
-		if (!exp_entered) cout << "No expression found, please enter an Infix Expression\n";
-		else cout << "Result of the last calculation was " << result << endl;
+		if (!exp_entered)
+		{
+			cout << "No expression found, please enter an Infix Expression\n";
+		}
+		else
+		{
+			result = ie.returnOutput;
+			cout << "Result of the last calculation was " << result << endl;
+		}
 		break;
 
 
