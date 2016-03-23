@@ -29,7 +29,7 @@ private:
 	double binarySolve(double i1, double i2, char c);
 	int getPrecedence(char c);
 	const string OPERATORS = "!@#-^*/%+>$<~`:&|";
-	const string BINARY_OPERATORS = "^* / %+>$<~`:& | ";
+	const string BINARY_OPERATORS = "^* / %+->$<~`:& | ";
 	stack<char> operators;
 	stack<double> operands;
 	string output;

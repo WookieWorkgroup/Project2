@@ -36,7 +36,40 @@ int Infix_Eval::evaluate(string s)
 		}
 		else if (isOperator(c))
 		{
-			if (c == '^')
+			// look at - symbol and see if treat as negative or subtraction
+			int temp = token;		
+
+			// treat as a negative because after a operator or first in expression
+			if (c == '-' && (token == 0 || isOperator(s[--temp])))
+			{
+				++token;
+				c = s[token];
+
+				// Get the number
+				if (isdigit(c))
+				{
+					// Check for more digits
+					int number = 0;
+					while (token < s.length() && isdigit(c))
+					{
+						number *= 10;
+						number += c - 48;
+						++token;
+						c = s[token];
+					}
+
+					// Make it negative and add to operands
+					number *= -1;
+					operands.push(number);
+				
+				}
+			
+				
+
+			}
+			
+			// Look at exponet
+			else if (c == '^')
 			{
 				while (!operators.empty() && !operands.empty() && getPrecedence(c) < getPrecedence(operators.top()))
 				{
@@ -44,6 +77,8 @@ int Infix_Eval::evaluate(string s)
 					if (!operators.empty())operators.pop();
 				}
 			}
+
+			// Other operands
 			else
 			{
 				while (!operators.empty() && !operands.empty() && getPrecedence(c) <= getPrecedence(operators.top()))
@@ -52,7 +87,10 @@ int Infix_Eval::evaluate(string s)
 					if (!operators.empty())operators.pop();
 				}
 			}
-			operators.push(c);
+
+			// Don't push the end of line onto the stack, that would be too much fun
+			if (c != '\0')
+				operators.push(c);
 		}
 		else if (c == '(')
 		{
@@ -80,6 +118,7 @@ int Infix_Eval::evaluate(string s)
 
 void Infix_Eval::solveTop(stack<char>& operators, stack<double>& operands)
 {
+	int result = 0;
 	char c = operators.top();
 	if (isBinaryOp(c))
 	{
@@ -87,16 +126,21 @@ void Infix_Eval::solveTop(stack<char>& operators, stack<double>& operands)
 		operands.pop();
 		double i2 = operands.top();
 		operands.pop();
-		cout << "Pushing " << binarySolve(i1, i2, c) << " to operands\n";
-		operands.push(binarySolve(i1, i2, c));
+		result = binarySolve(i1, i2, c);
+		cout << "Pushing " << result  << " to operands\n";
+		operands.push(result);
+		operators.pop();
 	}
 	else
 	{
 		double i1 = operands.top();
 		operands.pop();
-		cout << "Pushing " << unarySolve(i1, c) << " to operands\n";
-		operands.push(unarySolve(i1, c));
+		result = unarySolve(i1, c);
+		cout << "Pushing " << result << " to operands\n";
+		operands.push(result);
+		operators.pop();
 	}
+	
 }
 
 string Infix_Eval::returnOutput()
@@ -129,7 +173,6 @@ int Infix_Eval::getPrecedence(char c)
 	case '!':
 	case '@':
 	case '#':
-	case '-':
 		return 8;
 	case '^':
 		return 7;
@@ -138,6 +181,7 @@ int Infix_Eval::getPrecedence(char c)
 	case '%':
 		return 6;
 	case '+':
+	case '-':
 		return 5;
 	case '>':
 	case '$':
@@ -152,6 +196,8 @@ int Infix_Eval::getPrecedence(char c)
 	case '|':
 		return 1;
 	default:
+		return -1;
+
 		return -1;
 	}
 }
@@ -199,7 +245,7 @@ string Infix_Eval::convertOperatorsToSingleChars(string s)
 	the decrement operator would get screwed up.
 	*/
 
-	replaceAll(result, "-", "+-");
+	//replaceAll(result, "-", "+-");
 	return result;
 }
 
@@ -230,6 +276,8 @@ int Infix_Eval::unarySolve(int i, char c)
 		return -i;
 	case '(':
 		return i;
+
+		return i;
 	}
 }
 // Not in use currently, put code into the postfix_eval function
@@ -238,6 +286,8 @@ double Infix_Eval::binarySolve(double i1, double i2, char c)
 {
 	switch (c)
 	{
+	case '-':
+		return(i2 - i1);
 	case '^':
 		return pow(i2, i1);
 	case '*':
@@ -264,5 +314,7 @@ double Infix_Eval::binarySolve(double i1, double i2, char c)
 		return i2 && i1;
 	case '|':
 		return i2 || i1;
+
+
 	}
 }
