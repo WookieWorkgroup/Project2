@@ -32,6 +32,8 @@ int Infix_Eval::evaluate(string s)
 			}
 			--token;
 			c = s[token];
+
+			// put the number into the stack
 			operands.push(number);
 		}
 		else if (isOperator(c))
@@ -92,10 +94,13 @@ int Infix_Eval::evaluate(string s)
 			if (c != '\0')
 				operators.push(c);
 		}
+
+		// Look at parens to set priority
 		else if (c == '(')
 		{
 			operators.push(c);
 		}
+
 		else if (c == ')')
 		{
 			while (!operands.empty() && !operators.empty() && operators.top() != '(')
@@ -105,21 +110,32 @@ int Infix_Eval::evaluate(string s)
 			}
 			if (!operators.empty())operators.pop();
 		}
+
+		// Go to the next token
 		++token;
 	}
+
+	// Finish solving using postfix notation by going through remaining operators
 	while (!operators.empty() && !operands.empty())
 	{
 		solveTop(operators, operands);
 		if(!operators.empty())operators.pop();
 	}
 
+	// Return the answer
 	return operands.top();
 }
 
+
+// Runs calculation using the top operator and top one or two operands
 void Infix_Eval::solveTop(stack<char>& operators, stack<double>& operands)
 {
 	int result = 0;
+
+	// Get the operator
 	char c = operators.top();
+
+	// Binary operator
 	if (isBinaryOp(c))
 	{
 		double i1 = operands.top();
@@ -131,6 +147,8 @@ void Infix_Eval::solveTop(stack<char>& operators, stack<double>& operands)
 		operands.push(result);
 		operators.pop();
 	}
+
+	// Unary operator
 	else
 	{
 		double i1 = operands.top();
@@ -143,6 +161,8 @@ void Infix_Eval::solveTop(stack<char>& operators, stack<double>& operands)
 	
 }
 
+
+// Show the output and return as a string
 string Infix_Eval::returnOutput()
 {
 
@@ -151,10 +171,14 @@ string Infix_Eval::returnOutput()
 	
 }
 
+
+// Calcualation for binary operator
 bool Infix_Eval::isBinaryOp(char c)
 {
 	return BINARY_OPERATORS.find(c) != string::npos;
 }
+
+
 
 //Returns whether or not c is an operator
 bool Infix_Eval::isOperator(char c)
@@ -162,7 +186,8 @@ bool Infix_Eval::isOperator(char c)
 	return OPERATORS.find(c) != string::npos;
 }
 
-//Gets the precedence, as an int, of operation c
+
+//Gets the precedence, as an int, of operation c, higher numbers are higher presendence 
 int Infix_Eval::getPrecedence(char c)
 {
 	switch (c)
@@ -260,7 +285,8 @@ void Infix_Eval::replaceAll(string& str, const string& from, const string& to)
 		start_pos += to.length();
 	}
 }
-// Not in use, put code into the Postfix_Evaluator
+
+
 //Returns the solved unary expression of operation c on operand i
 int Infix_Eval::unarySolve(int i, char c)
 {
@@ -280,7 +306,8 @@ int Infix_Eval::unarySolve(int i, char c)
 		return i;
 	}
 }
-// Not in use currently, put code into the postfix_eval function
+
+
 //Returns the solved binary expression of operation c on operands i1 and i2
 double Infix_Eval::binarySolve(double i1, double i2, char c)
 {

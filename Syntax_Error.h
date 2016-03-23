@@ -4,6 +4,8 @@
 #include <iostream>
 #include <fstream>
 
+
+// Shows error thrown inside infix expression calculation, errors caught while doing a calc
 class Syntax_Error : public std::invalid_argument {
   
 public:

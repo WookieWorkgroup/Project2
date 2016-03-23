@@ -29,6 +29,7 @@ void displayMenu(Infix_Eval& ie, string& user_input, int& result, bool& exp_ente
 
 int main()
 {
+	// Initial variables
 	Infix_Eval ie;
 	string user_input = "";
 	int result = 0;

@@ -16,18 +16,31 @@ using namespace std;
 
 class Infix_Eval {
 public:
+
+	// Constructor
 	Infix_Eval();
+
+	// Main expression evaluation function
 	int evaluate(string s);
+
+	// Give answer to the requester as a string
 	string returnOutput();
+
 private:
+
+	// Calculation functions
 	void solveTop(stack<char>& operators, stack<double>& operands);
 	bool isBinaryOp(char c);
 	bool isOperator(char c);
-	void replaceAll(string& str, const string& from, const string& to);
-	string convertOperatorsToSingleChars(string s);
 	int unarySolve(int i, char c);
 	double binarySolve(double i1, double i2, char c);
 	int getPrecedence(char c);
+
+	// Replace symbols for operators so all are single chars
+	void replaceAll(string& str, const string& from, const string& to);
+	string convertOperatorsToSingleChars(string s);
+
+	// Our internal data
 	const string OPERATORS = "!@#-^*/%+>$<~`:&|";
 	const string BINARY_OPERATORS = "^* / %+->$<~`:& | ";
 	stack<char> operators;
