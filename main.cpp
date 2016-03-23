@@ -20,7 +20,6 @@ Outputs:		Result as an int
 #include "Syntax_Error.h"
 #include "Infix_Eval.h"
 #include "Inputinspect.h"
-#include "Error.h"
 
 using namespace std;
 

@@ -19,7 +19,7 @@ private:
 
 public:
 	//Constructors
-	Inputinspect() { ; };					 //Default constructor
+	Inputinspect() {; };					 //Default constructor
 	bool isOperator(char ch) const;			 //Judge if the character is a operator
 	string OptimizeInput(string input);		 //Inspect the space error and remove the space	
 	void InspectOperator(string text);		 //inspect the operator error

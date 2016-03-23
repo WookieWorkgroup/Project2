@@ -153,6 +153,11 @@ void Inputinspect::InspectOperator(string text)
 					a++;
 					continue;
 				}
+				else if(a == 0 && isdigit(text[a + 1]))
+				{
+					Indicator = 1;
+					continue;
+				}
 				else
 				{
 					if ((a < text.size() - 1) && (text[a + 1] == '('))
@@ -215,9 +220,7 @@ string Inputinspect::Processinput(string input)
 
 void Inputinspect::Error_Report(const string& theMessage, int theIndex)
 {
-	cerr << message << " @ char " << ((index == -1) ? "N/A" : to_string(index)) << endl << endl;
-	cerr << "Program exited.\n\n";
+	cerr << theMessage << " @ char " << ((index == -1) ? "N/A" : to_string(theIndex)) << endl << endl;
 
 	system("pause");
-	exit(-1);
 }
