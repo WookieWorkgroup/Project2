@@ -1,18 +1,10 @@
 # Project2
 
 Done
-1) Added logging to a file log.txt
-2) Added try, catch that will prompt the user for a new input
-3) Added char or symbol info to exceptions
-4) Added exceptions to infix in all switches and top/pop
-
-To Do
-Error Codes - Add a unique code to every type of exception thrown
-index number_file name abreviation_extension
-Example - 01_ie_cp = first error message in the infix_eval cpp
+Update the inputinspect and it can inspect most of errors now.
+(The index position for the error report is the position after removed spaces.)
 
 Errors
-1) 4++ is seen as invalid by input inspect
-2) 2+2^2*3 throws error
-3) Divide by zero not caught (fixed by exception in infix_eval, needs to be caught in input inspect first)
-
+1) 4++ still report an error because the requirements for our project told us that the ++ is prefix increment, if we need make it can work with post increment, I'll fix it.
+2)1+2*3     2+2^2*3   ++++2-5*(3^2) cannot calculator corretly.
+3)Divide by zero not caught(now Josh's detector can report like 1/0, but can't detect devide 0 like this 1/(6-6), so I think it should be detected when it do the divide calculate but not when the expression input.
