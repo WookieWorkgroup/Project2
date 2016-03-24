@@ -40,7 +40,7 @@ string Inputinspect::OptimizeInput(string input)
 			output.push_back(input[i]);
 			continue;
 		}
-		if (input[i] == ' ')
+		if (input[i] == ' '|| input[k] == '\t')
 		{
 			if (isdigit(input[i - 1]))
 			{
@@ -60,6 +60,8 @@ string Inputinspect::OptimizeInput(string input)
 				}
 			}
 		}
+		if (!isdigit(input[i]) && !isOperator(input[i])&&(input[i]!=' ')&&(input[i] != '\t'))
+			Error_Report("Invail symbol", i);
 	}
 	if (balofBracket > 0)
 		Error_Report("There are more opening parenthesis than closing parenthesis", -1);
@@ -78,6 +80,7 @@ void Inputinspect::InspectOperator(string text)
 
 	for (int a = 0; a < text.size(); a++)
 	{
+
 		if (isdigit(text[a]))
 		{
 			if ((a + 1) < text.size())
@@ -97,10 +100,13 @@ void Inputinspect::InspectOperator(string text)
 			
 			if (Indicator == 0)
 			{
-				if ((a + 1) < text.size() && isOperator(text[a + 1]))
-					continue;
-				else
-					Error_Report("The digit can't follow with the closing parethesis", a + 1);
+				if ((a + 1) < text.size())
+				{
+					if (isOperator(text[a + 1]))
+						continue;
+					else
+						Error_Report("The digit can't follow with the closing parethesis", a + 1);
+				}
 			}
 			else
 				Error_Report("There shouldn't be closing parenthesis in such position", a);
@@ -116,7 +122,7 @@ void Inputinspect::InspectOperator(string text)
 				continue;
 			}
 			else
-				Error_Report("Operator cannot appear in such position", a);
+				Error_Report("Binary operator cannot appear in such position", a);
 		}
 
 		if ((text[a] == '=') || (text[a] == '&') || (text[a] == '|'))
@@ -133,7 +139,7 @@ void Inputinspect::InspectOperator(string text)
 					Error_Report("Incomplete operator", a);
 			}
 			else
-				Error_Report("Operator cannot appear in such position", a);
+				Error_Report("Binary operator cannot appear in such position", a);
 		}
 
 		if (text[a] == '!')
@@ -208,18 +214,20 @@ void Inputinspect::InspectOperator(string text)
 				}
 			}
 			else
-				Error_Report("Operator cannot appear in such position", a);
+				Error_Report("Binary operator cannot appear in such position", a);
 		}
 
 		if (text[a] == '(')
 		{
 			if (Indicator == 2)
 			{
-				if ((a < text.size() - 1) && (text[a + 1] == '('))
-					continue;
-				else
+				if ((a < text.size() - 1) && (isdigit(text[a + 1])))
 				{
 					Indicator = 1;
+					continue;
+				}
+				else
+				{
 					continue;
 				}
 			}
