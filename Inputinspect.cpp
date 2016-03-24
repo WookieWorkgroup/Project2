@@ -86,7 +86,9 @@ void Inputinspect::InspectOperator(string text)
 			if ((a + 1) < text.size())
 			{
 				if ((text[a + 1] == '+') || (text[a + 1] == '-') || (text[a + 1] == '*') || (text[a + 1] == '/') || (text[a + 1] == '%') || (text[a + 1] == '<') || (text[a + 1] == '>') || (text[a + 1] == '=') || (text[a + 1] == '|') || (text[a + 1] == '&') || (text[a + 1] == '^'))
+				{
 					Indicator = 1;
+				}
 				else if ((a + 2) < text.size() && (text[a + 1] == '!') && (text[a + 2] == '='))
 					Indicator = 1;
 				else
