@@ -6,6 +6,7 @@
 #include<iostream>
 #include <string>
 #include <vector>
+#include <fstream>
 using namespace std;
 
 /* Inspect if the input is correct. */
@@ -25,6 +26,8 @@ public:
 	void InspectOperator(string text);		 //inspect the operator error
 	string Processinput(string input);		 //the wrapper function
 	void Error_Report(const string& theMessage, int theIndex);		//Error report function
+
+	
 };
 
 #endif

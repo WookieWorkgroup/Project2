@@ -21,7 +21,7 @@ public:
 	Infix_Eval();
 
 	// Main expression evaluation function
-	int evaluate(string s);
+	int evaluate(string s, ofstream& log_file);
 	void clearData();
 
 private:
@@ -33,6 +33,7 @@ private:
 	int unarySolve(int i, char c);
 	double binarySolve(double i1, double i2, char c);
 	int getPrecedence(char c);
+	ofstream log_file;
 	
 
 	// Replace symbols for operators so all are single chars

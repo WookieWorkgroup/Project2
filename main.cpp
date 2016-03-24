@@ -24,7 +24,7 @@ Outputs:		Result as an int
 using namespace std;
 
 // Functions for the menu
-void displayMenu(Infix_Eval& ie, string& user_input, int& result, bool& exp_entered);
+void displayMenu(Infix_Eval& ie, string& user_input, int& result, bool& exp_entered, ofstream& log_file);
 
 int main()
 {
@@ -34,16 +34,24 @@ int main()
 	int result = 0;
 	bool exp_entered = false;
 
+	ofstream log_file;
+	log_file.open("log.txt");
+	if (!log_file.is_open())
+	{
+		cerr << "Log.txt did not open, bye!" << endl;
+	}
+
 	// Call the menu for entering calculations
 	while (true)
 	{
-		displayMenu(ie, user_input, result, exp_entered);
+		displayMenu(ie, user_input, result, exp_entered, log_file);
 	}
+	log_file.close();
 }
 
 
 // A glorious menu and user interface
-void displayMenu(Infix_Eval& ie, string& user_input, int& result, bool& exp_entered)
+void displayMenu(Infix_Eval& ie, string& user_input, int& result, bool& exp_entered, ofstream& log_file)
 {
 	
 	
@@ -78,23 +86,28 @@ void displayMenu(Infix_Eval& ie, string& user_input, int& result, bool& exp_ente
 		cout << "Enter the Infix Expression: ";
 		cin.ignore();
 		getline(cin, user_input);
-
+		log_file << "User entered " << user_input << endl;
 		// See if the polynomial is poperly entered
 		try{
 			Inputinspect Ins;
 			Ins.Processinput(user_input);
 			ie.clearData();
-			result = ie.evaluate(user_input);
-			cout << "Expression successfully entered\n";
+			result = ie.evaluate(user_input, log_file);
 			exp_entered = true;
+			cout << endl;
 			cout << "Result is: " << result << endl;
+			log_file << "Result is: " << result << endl;
 		}
 
 		// Bad input, try again
 		catch (const std::exception &e)
 		{
 			std::cout << std::endl << std::endl;
+			
 			std::cout << e.what() << std::endl;
+			log_file << e.what() << endl;
+			std::cout << "Calculation failed, try again!!!" << std::endl;
+			log_file << "Calculation failed, try again!!!" << std::endl;
 		}
 
 		cout << endl << endl;
@@ -107,6 +120,7 @@ void displayMenu(Infix_Eval& ie, string& user_input, int& result, bool& exp_ente
 		else
 		{
 			cout << "You entered: " << user_input << endl;
+			log_file << "You entered: " << user_input << endl;
 		}
 		break;
 
@@ -116,10 +130,12 @@ void displayMenu(Infix_Eval& ie, string& user_input, int& result, bool& exp_ente
 		if (!exp_entered)
 		{
 			cout << "No expression found, please enter an Infix Expression\n";
+			log_file << "No expression found, please enter an Infix Expression\n";
 		}
 		else
 		{
 			cout << "Result of the last calculation was " << result << endl;
+			log_file << "Result of the last calculation was " << result << endl;
 		}
 		break;
 
@@ -131,17 +147,20 @@ void displayMenu(Infix_Eval& ie, string& user_input, int& result, bool& exp_ente
 		user_input = "";
 		cout << endl << endl;
 		cout << "Entries cleared\n\n";
+		log_file << "Entries cleared\n\n";
 		break;
 
 
 		// Bah bye
 	case 5:
 		exit(0);
+		log_file.close();
 
 		// Bad choice, try that again
 	default:
 		cout << endl << endl;
 		cout << "Invalid menu option" << endl;
+		log_file << "Invalid menu option" << endl;
 		break;
 	}
 }

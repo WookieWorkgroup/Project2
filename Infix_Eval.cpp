@@ -5,14 +5,14 @@ Infix_Eval::Infix_Eval()
 	//Default constructor
 }
 
-int Infix_Eval::evaluate(string s)
+int Infix_Eval::evaluate(string s, ofstream& log_file)
 {
 	//The algorithm used is Edsger Dijkstra's "Shunting-Yard Algorithm" and is
 	//copied from the wikipedia page.
 	//See https://en.wikipedia.org/wiki/Shunting-yard_algorithm for more info
 
 	s = convertOperatorsToSingleChars(s);
-	cout << "Converted string:\t" << s << endl;
+	log_file << "Converted string:\t" << s << endl;
 	int token = 0;
 	while (token < s.length())
 	{
@@ -110,6 +110,13 @@ int Infix_Eval::evaluate(string s)
 			if (!operators.empty())operators.pop();
 		}
 
+		else
+		{
+			std::string msg = "Calc error, invalid symbol ";
+			msg += c;
+			throw std::exception(msg.c_str());
+		}
+
 		// Go to the next token
 		++token;
 	}
@@ -122,6 +129,14 @@ int Infix_Eval::evaluate(string s)
 	}
 
 	// Return the answer
+	if (!operands.empty())
+		return operands.top();
+	else
+	{
+		std::string msg = "Calc error, no result left on stack";
+		throw std::exception(msg.c_str());
+	}
+
 	return operands.top();
 }
 
@@ -132,17 +147,41 @@ void Infix_Eval::solveTop(stack<char>& operators, stack<double>& operands)
 	int result = 0;
 
 	// Get the operator
-	char c = operators.top();
+	char c;
+	if (!operators.empty())
+		c = operators.top();
+	else
+	{
+		std::string msg = "Calc error, no operator left to calculate solveTop";
+		throw std::exception(msg.c_str());
+	}
 
 	// Binary operator
 	if (isBinaryOp(c))
 	{
-		double i1 = operands.top();
+		double i1;
+		if (!operands.empty())
+			i1 = operands.top();
+		else
+		{
+			std::string msg = "Calc error, no operand left to calculate ";
+			msg += c;
+			throw std::exception(msg.c_str());
+		}
+
 		operands.pop();
-		double i2 = operands.top();
+		double i2;
+		if (!operands.empty())
+			i2 = operands.top();
+		else
+		{
+			std::string msg = "Calc error, no operand left to calculate ";
+			msg += c;
+			throw std::exception(msg.c_str());
+		}
 		operands.pop();
 		result = binarySolve(i1, i2, c);
-		cout << "Pushing " << result  << " to operands\n";
+		log_file << "Pushing " << result  << " to operands\n";
 		operands.push(result);
 		operators.pop();
 	}
@@ -150,12 +189,21 @@ void Infix_Eval::solveTop(stack<char>& operators, stack<double>& operands)
 	// Unary operator
 	else
 	{
-		double i1 = operands.top();
+		double i1 = 0;
+		if (!operands.empty())
+			i1 = operands.top();
+		else
+		{
+			std::string msg = "Calc error, no operand left to calculate " + to_string(c);
+			throw std::exception(msg.c_str());
+		}
 		operands.pop();
 		result = unarySolve(i1, c);
-		cout << "Pushing " << result << " to operands\n";
+		log_file << "Pushing " << result << " to operands\n";
 		operands.push(result);
 		operators.pop();
+		
+			
 	}
 	
 }
@@ -211,9 +259,10 @@ int Infix_Eval::getPrecedence(char c)
 	case '|':
 		return 1;
 	default:
-		return -1;
-
-		return -1;
+		string msg = "Calc error: Symbol '";
+		msg += c;
+		msg += "' not valid for calculation, exiting calculation";
+		throw std::exception(msg.c_str());
 	}
 }
 
@@ -292,8 +341,11 @@ int Infix_Eval::unarySolve(int i, char c)
 		return -i;
 	case '(':
 		return i;
-
-		return i;
+	default:
+		string msg = "Calc error: Symbol '";
+		msg += c;
+		msg += "' not valid for calculation, exiting calculation";
+		throw std::exception(msg.c_str());
 	}
 }
 
@@ -331,13 +383,17 @@ double Infix_Eval::binarySolve(double i1, double i2, char c)
 		return i2 && i1;
 	case '|':
 		return i2 || i1;
-
-
+	default:
+		string msg = "Calc error: Symbol '";
+		msg += c;
+		msg += "' not valid for calculation, exiting calculation";
+		throw std::exception(msg.c_str());
 	}
 }
 
 void Infix_Eval::clearData()
 {
+	
 	// Clear operands
 	while (!operands.empty())
 		operands.pop();
@@ -345,5 +401,7 @@ void Infix_Eval::clearData()
 	// Clear operators
 	while (!operators.empty())
 		 operators.pop();
+
+	return;
 	
 }
