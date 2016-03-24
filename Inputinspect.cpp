@@ -78,11 +78,29 @@ void Inputinspect::InspectOperator(string text)
 
 	for (int a = 0; a < text.size(); a++)
 	{
+		if (isdigit(text[a]))
+		{
+			if ((a + 1) < text.size())
+			{
+				if ((text[a + 1] == '+') || (text[a + 1] == '-') || (text[a + 1] == '*') || (text[a + 1] == '/') || (text[a + 1] == '%') || (text[a + 1] == '<') || (text[a + 1] == '>') || (text[a + 1] == '=') || (text[a + 1] == '|') || (text[a + 1] == '&') || (text[a + 1] == '^'))
+					Indicator = 1;
+				else if ((a + 2) < text.size() && (text[a + 1] == '!') && (text[a + 2] == '='))
+					Indicator = 1;
+				else
+					Indicator = 0;
+			}
+			continue;
+		}
+
 		if (text[a] == ')')
 		{
+			
 			if (Indicator == 0)
 			{
-				continue;
+				if ((a + 1) < text.size() && isOperator(text[a + 1]))
+					continue;
+				else
+					Error_Report("The digit can't follow with the closing parethesis", a + 1);
 			}
 			else
 				Error_Report("There shouldn't be closing parenthesis in such position", a);
@@ -153,7 +171,7 @@ void Inputinspect::InspectOperator(string text)
 					a++;
 					continue;
 				}
-				else if(a == 0 && isdigit(text[a + 1]))
+				else if (a == 0 && isdigit(text[a + 1]))
 				{
 					Indicator = 1;
 					continue;
@@ -201,7 +219,7 @@ void Inputinspect::InspectOperator(string text)
 					continue;
 				else
 				{
-					Indicator = 0;
+					Indicator = 1;
 					continue;
 				}
 			}
@@ -209,6 +227,8 @@ void Inputinspect::InspectOperator(string text)
 				Error_Report("Opening parenthesis cannot appear in such position", a);
 		}
 	}
+	if (text[text.size() - 1] != ')' && !isdigit(text[text.size() - 1]))
+		Error_Report("Lose the last operand at the end.", -1);
 }
 
 string Inputinspect::Processinput(string input)
