@@ -335,3 +335,15 @@ double Infix_Eval::binarySolve(double i1, double i2, char c)
 
 	}
 }
+
+void Infix_Eval::clearData()
+{
+	// Clear operands
+	while (!operands.empty())
+		operands.pop();
+	
+	// Clear operators
+	while (!operators.empty())
+		 operators.pop();
+	
+}

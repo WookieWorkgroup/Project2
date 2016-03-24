@@ -22,6 +22,7 @@ public:
 
 	// Main expression evaluation function
 	int evaluate(string s);
+	void clearData();
 
 private:
 
@@ -32,6 +33,7 @@ private:
 	int unarySolve(int i, char c);
 	double binarySolve(double i1, double i2, char c);
 	int getPrecedence(char c);
+	
 
 	// Replace symbols for operators so all are single chars
 	void replaceAll(string& str, const string& from, const string& to);

@@ -220,7 +220,13 @@ string Inputinspect::Processinput(string input)
 
 void Inputinspect::Error_Report(const string& theMessage, int theIndex)
 {
-	cerr << theMessage << " @ char " << ((index == -1) ? "N/A" : to_string(theIndex)) << endl << endl;
+	std::string msg;
+		
+	if (theIndex != -1)
+		msg = theMessage + " @ char " + to_string(theIndex);
+	else
+		msg = theMessage;
 
-	system("pause");
+	throw std::exception(msg.c_str());
+
 }

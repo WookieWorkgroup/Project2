@@ -83,6 +83,7 @@ void displayMenu(Infix_Eval& ie, string& user_input, int& result, bool& exp_ente
 		try{
 			Inputinspect Ins;
 			Ins.Processinput(user_input);
+			ie.clearData();
 			result = ie.evaluate(user_input);
 			cout << "Expression successfully entered\n";
 			exp_entered = true;
@@ -90,10 +91,10 @@ void displayMenu(Infix_Eval& ie, string& user_input, int& result, bool& exp_ente
 		}
 
 		// Bad input, try again
-		catch (exception e)
+		catch (const std::exception &e)
 		{
-			cout << endl << endl;
-			cout << "Incorrect formatting entered, use formatting like 3^3+1" << endl;
+			std::cout << std::endl << std::endl;
+			std::cout << e.what() << std::endl;
 		}
 
 		cout << endl << endl;
