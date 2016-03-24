@@ -6,5 +6,12 @@ Done
 3) Added char or symbol info to exceptions
 4) Added exceptions to infix in all switches and top/pop
 
+To Do
+Error Codes - Add a unique code to every type of exception thrown
+index number_file name abreviation_extension
+Example - 01_ie_cp = first error message in the infix_eval cpp
+
 Errors
 1) 4++ is seen as invalid by input inspect
+
+
