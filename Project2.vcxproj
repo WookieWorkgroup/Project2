@@ -84,7 +84,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Infix_Eval.h" />
-    <ClInclude Include="Syntax_Error.h" />
     <ClInclude Include="Inputinspect.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

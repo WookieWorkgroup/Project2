@@ -17,7 +17,6 @@ Outputs:		Result as an int
 #include <iostream>
 #include <string> 
 #include <stack>
-#include "Syntax_Error.h"
 #include "Infix_Eval.h"
 #include "Inputinspect.h"
 

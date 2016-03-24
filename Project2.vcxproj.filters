@@ -26,9 +26,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Syntax_Error.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Infix_Eval.h">
       <Filter>Header Files</Filter>
     </ClInclude>
