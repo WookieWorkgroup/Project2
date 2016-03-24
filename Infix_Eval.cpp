@@ -110,9 +110,10 @@ int Infix_Eval::evaluate(string s, ofstream& log_file)
 			if (!operators.empty())operators.pop();
 		}
 
+		// Operator not valid, error
 		else
 		{
-			std::string msg = "Calc error, invalid symbol ";
+			std::string msg = "Calc error: invalid symbol ";
 			msg += c;
 			throw std::exception(msg.c_str());
 		}
@@ -131,9 +132,11 @@ int Infix_Eval::evaluate(string s, ofstream& log_file)
 	// Return the answer
 	if (!operands.empty())
 		return operands.top();
+
+	// Error, nothing on stack
 	else
 	{
-		std::string msg = "Calc error, no result left on stack";
+		std::string msg = "Calc error: no result left on stack";
 		throw std::exception(msg.c_str());
 	}
 
@@ -150,9 +153,11 @@ void Infix_Eval::solveTop(stack<char>& operators, stack<double>& operands)
 	char c;
 	if (!operators.empty())
 		c = operators.top();
+
+	// Error, nothing on the stack
 	else
 	{
-		std::string msg = "Calc error, no operator left to calculate solveTop";
+		std::string msg = "Calc error: no operator left to calculate solveTop";
 		throw std::exception(msg.c_str());
 	}
 
@@ -162,9 +167,11 @@ void Infix_Eval::solveTop(stack<char>& operators, stack<double>& operands)
 		double i1;
 		if (!operands.empty())
 			i1 = operands.top();
+
+		// Error, nothing on the stack
 		else
 		{
-			std::string msg = "Calc error, no operand left to calculate ";
+			std::string msg = "Calc error: no operand left to calculate ";
 			msg += c;
 			throw std::exception(msg.c_str());
 		}
@@ -173,6 +180,8 @@ void Infix_Eval::solveTop(stack<char>& operators, stack<double>& operands)
 		double i2;
 		if (!operands.empty())
 			i2 = operands.top();
+
+		// Error, nothing on the stack
 		else
 		{
 			std::string msg = "Calc error, no operand left to calculate ";
@@ -192,9 +201,11 @@ void Infix_Eval::solveTop(stack<char>& operators, stack<double>& operands)
 		double i1 = 0;
 		if (!operands.empty())
 			i1 = operands.top();
+
+		// Error, nothing on the stack
 		else
 		{
-			std::string msg = "Calc error, no operand left to calculate " + to_string(c);
+			std::string msg = "Calc error: no operand left to calculate " + to_string(c);
 			throw std::exception(msg.c_str());
 		}
 		operands.pop();
@@ -258,6 +269,8 @@ int Infix_Eval::getPrecedence(char c)
 		return 2;
 	case '|':
 		return 1;
+
+	// Error, invalid operator
 	default:
 		string msg = "Calc error: Symbol '";
 		msg += c;
@@ -341,6 +354,8 @@ int Infix_Eval::unarySolve(int i, char c)
 		return -i;
 	case '(':
 		return i;
+
+	// Error, invalid operator
 	default:
 		string msg = "Calc error: Symbol '";
 		msg += c;
@@ -383,6 +398,8 @@ double Infix_Eval::binarySolve(double i1, double i2, char c)
 		return i2 && i1;
 	case '|':
 		return i2 || i1;
+
+	// Error, invalid operator
 	default:
 		string msg = "Calc error: Symbol '";
 		msg += c;

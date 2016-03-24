@@ -9,6 +9,7 @@
 #include <cctype>
 #include <iostream>
 #include <fstream>
+#include <stdexcept>
 #include "Syntax_Error.h"
 
 
