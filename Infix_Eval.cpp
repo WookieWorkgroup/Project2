@@ -113,7 +113,7 @@ int Infix_Eval::evaluate(string s, ofstream& log_file)
 		// Operator not valid, error
 		else
 		{
-			std::string msg = "Calc error: invalid symbol ";
+			std::string msg = "Calc Error: Code 0_ie_cp, invalid symbol, ";
 			msg += c;
 			throw std::exception(msg.c_str());
 		}
@@ -136,7 +136,7 @@ int Infix_Eval::evaluate(string s, ofstream& log_file)
 	// Error, nothing on stack
 	else
 	{
-		std::string msg = "Calc error: no result left on stack";
+		std::string msg = "Calc error: no result left on stack, Code 1_ie_cp";
 		throw std::exception(msg.c_str());
 	}
 
@@ -157,7 +157,7 @@ void Infix_Eval::solveTop(stack<char>& operators, stack<double>& operands)
 	// Error, nothing on the stack
 	else
 	{
-		std::string msg = "Calc error: no operator left to calculate solveTop";
+		std::string msg = "Calc error: Code 2_ie_cp, no operator left to calculate ";
 		throw std::exception(msg.c_str());
 	}
 
@@ -171,7 +171,7 @@ void Infix_Eval::solveTop(stack<char>& operators, stack<double>& operands)
 		// Error, nothing on the stack
 		else
 		{
-			std::string msg = "Calc error: no operand left to calculate ";
+			std::string msg = "Calc Error: Code 3_ie_cp, no operand left to calculate ";
 			msg += c;
 			throw std::exception(msg.c_str());
 		}
@@ -184,7 +184,7 @@ void Infix_Eval::solveTop(stack<char>& operators, stack<double>& operands)
 		// Error, nothing on the stack
 		else
 		{
-			std::string msg = "Calc error, no operand left to calculate ";
+			std::string msg = "Calc Error: Code 4_ie_cp, no operand left to calculate ";
 			msg += c;
 			throw std::exception(msg.c_str());
 		}
@@ -205,7 +205,7 @@ void Infix_Eval::solveTop(stack<char>& operators, stack<double>& operands)
 		// Error, nothing on the stack
 		else
 		{
-			std::string msg = "Calc error: no operand left to calculate " + to_string(c);
+			std::string msg = "Calc Error: Code 5_ie_cp, no operand left to calculate " + to_string(c);
 			throw std::exception(msg.c_str());
 		}
 		operands.pop();
@@ -272,7 +272,7 @@ int Infix_Eval::getPrecedence(char c)
 
 	// Error, invalid operator
 	default:
-		string msg = "Calc error: Symbol '";
+		string msg = "Calc error: Code 6_ie_cp, Symbol '";
 		msg += c;
 		msg += "' not valid for calculation, exiting calculation";
 		throw std::exception(msg.c_str());
@@ -357,7 +357,7 @@ int Infix_Eval::unarySolve(int i, char c)
 
 	// Error, invalid operator
 	default:
-		string msg = "Calc error: Symbol '";
+		string msg = "Calc Error: Code 7_ie_cp, Symbol '";
 		msg += c;
 		msg += "' not valid for calculation, exiting calculation";
 		throw std::exception(msg.c_str());
@@ -377,7 +377,17 @@ double Infix_Eval::binarySolve(double i1, double i2, char c)
 	case '*':
 		return i2*i1;
 	case '/':
-		return i2 / i1;
+		// Dont divide by them zeros
+		if (i1 == 0)
+		{
+			string msg = "Calc Error: Code 10_ie_cp, Divide by Zero, ";
+			msg += to_string(int(i2));
+			msg += "/";
+			msg += to_string(int(i1));
+			throw std::exception(msg.c_str());
+		}
+		else
+			return i2 / i1;
 	case '%':
 		return (int)i2 % (int)i1;
 	case '+':
@@ -401,7 +411,7 @@ double Infix_Eval::binarySolve(double i1, double i2, char c)
 
 	// Error, invalid operator
 	default:
-		string msg = "Calc error: Symbol '";
+		string msg = "Calc Error: Code 8_ie_cp, Symbol '";
 		msg += c;
 		msg += "' not valid for calculation, exiting calculation";
 		throw std::exception(msg.c_str());

@@ -106,7 +106,17 @@ void displayMenu(Infix_Eval& ie, string& user_input, int& result, bool& exp_ente
 			std::cout << e.what() << std::endl;
 			log_file << e.what() << endl;
 			std::cout << "Calculation failed, try again!!!" << std::endl;
+			std::cout << "Purging previous data" << std::endl;
+			std::cout << "See log.txt for details" << std::endl;
 			log_file << "Calculation failed, try again!!!" << std::endl;
+			log_file << "Purging previous data" << std::endl;
+
+			// Clear any result, user input, or data to purge error
+			result = 0;
+			exp_entered = false;
+			user_input = "";
+			ie.clearData();
+			
 		}
 
 		cout << endl << endl;
@@ -143,6 +153,7 @@ void displayMenu(Infix_Eval& ie, string& user_input, int& result, bool& exp_ente
 	case 4:
 		result = 0;
 		exp_entered = false;
+		ie.clearData();
 		user_input = "";
 		cout << endl << endl;
 		cout << "Entries cleared\n\n";
