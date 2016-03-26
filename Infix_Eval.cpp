@@ -13,7 +13,7 @@ int Infix_Eval::evaluate(string s, ofstream& log_file)
 
 	s = convertOperatorsToSingleChars(s);
 	log_file << "Converted string:\t" << s << endl;
-	int token = 0;
+	unsigned int token = 0;
 	while (token < s.length())
 	{
 		char c = s[token];
@@ -130,7 +130,7 @@ int Infix_Eval::evaluate(string s, ofstream& log_file)
 
 	// Return the answer
 	if (!operands.empty())
-		return operands.top();
+		return int(operands.top());
 
 	// Error, nothing on stack
 	else
@@ -139,7 +139,7 @@ int Infix_Eval::evaluate(string s, ofstream& log_file)
 		throw std::exception(msg.c_str());
 	}
 
-	return operands.top();
+	return int(operands.top());
 }
 
 
@@ -190,7 +190,7 @@ void Infix_Eval::solveTop(stack<char>& operators, stack<double>& operands)
 			throw std::exception(msg.c_str());
 		}
 		operands.pop();
-		result = binarySolve(i1, i2, c);
+		result = int(binarySolve(i1, i2, c));
 		log_file << "Pushing " << result  << " to operands\n";
 		operands.push(result);
 		operators.pop();
@@ -210,7 +210,7 @@ void Infix_Eval::solveTop(stack<char>& operators, stack<double>& operands)
 			throw std::exception(msg.c_str());
 		}
 		operands.pop();
-		result = unarySolve(i1, c);
+		result = int(unarySolve(i1, c));
 		log_file << "Pushing " << result << " to operands\n";
 		operands.push(result);
 		operators.pop();
