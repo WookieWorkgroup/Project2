@@ -12,16 +12,19 @@ string Inputinspect::OptimizeInput(string input)
 {
 	int balofBracket = 0;
 	if (input.empty())
-		Error_Report("The input is empty!", -1);
+		Error_Report("Input error : Code 1_inin_cp, the input is empty!", -1);
 	string output;
 	int k = 0;
+
+	//remove the spaces before the expression
 	while (input[k] == ' ' || input[k] == '\t' || input[k] == '\n')
 	{
 		k++;
 	}
 	if(k==input.size())
-		Error_Report("The input is empty!", -1);
+		Error_Report("Input error : Code 2_inin_cp, the input is empty!", -1);
 
+	//Inspect if there are something wrong with input spaces
 	for (unsigned int i = k; i < input.size(); i++)
 	{
 		if (isdigit(input[i]))
@@ -36,7 +39,7 @@ string Inputinspect::OptimizeInput(string input)
 			if (input[i] == ')')
 				balofBracket--;
 			if (balofBracket < 0)
-				Error_Report("There is one more closing parenthesis than opening parethesis", i);
+				Error_Report("Input error : Code 3_Inin_cp, there is one more closing parenthesis than opening parethesis", i);
 			output.push_back(input[i]);
 			continue;
 		}
@@ -56,15 +59,15 @@ string Inputinspect::OptimizeInput(string input)
 				if (i != (input.size() - 1))
 				{
 					if (isdigit(input[i + 1]))
-						Error_Report("Two operands in a row", i + 1);
+						Error_Report("Input error : Code 4_Inin_cp, two operands in a row", i + 1);
 				}
 			}
 		}
 		if (!isdigit(input[i]) && !isOperator(input[i])&&(input[i]!=' ')&&(input[i] != '\t'))
-			Error_Report("Invail symbol", i);
+			Error_Report("Input error : Code 5_Inin_cp, Invail symbol", i);
 	}
 	if (balofBracket > 0)
-		Error_Report("There are more opening parenthesis than closing parenthesis", -1);
+		Error_Report("Input error : Code 6_Inin_cp, there are more opening parenthesis than closing parenthesis", -1);
 	return output;
 }
 
@@ -107,11 +110,11 @@ void Inputinspect::InspectOperator(string text)
 					if (isOperator(text[a + 1]))
 						continue;
 					else
-						Error_Report("The digit can't follow with the closing parethesis", a + 1);
+						Error_Report("Oper error : Code 1_Inin_cp, the digit can't follow with the closing parethesis", a + 1);
 				}
 			}
 			else
-				Error_Report("There shouldn't be closing parenthesis in such position", a);
+				Error_Report("Oper error : Code 2_Inin_cp, there shouldn't be closing parenthesis in such position", a);
 		}
 
 		if (Indicator == 0) Indicator = 1;
@@ -124,7 +127,7 @@ void Inputinspect::InspectOperator(string text)
 				continue;
 			}
 			else
-				Error_Report("Binary operator cannot appear in such position", a);
+				Error_Report("Oper error : Code 3_Inin_cp, binary operator cannot appear in such position", a);
 		}
 
 		if ((text[a] == '=') || (text[a] == '&') || (text[a] == '|'))
@@ -138,10 +141,10 @@ void Inputinspect::InspectOperator(string text)
 					continue;
 				}
 				else
-					Error_Report("Incomplete operator", a);
+					Error_Report("Oper error : Code 4_Inin_cp, incomplete operator", a);
 			}
 			else
-				Error_Report("Binary operator cannot appear in such position", a);
+				Error_Report("Oper error : Code 5_Inin_cp, binary operator cannot appear in such position", a);
 		}
 
 		if (text[a] == '!')
@@ -159,10 +162,10 @@ void Inputinspect::InspectOperator(string text)
 					continue;
 				}
 				else
-					Error_Report("Incomplete operator", a);
+					Error_Report("Oper error : Code 6_Inin_cp, incomplete operator", a);
 			}
 			else
-				Error_Report("Operator cannot appear in such position", a);
+				Error_Report("Oper error : Code 7_Inin_cp, operator cannot appear in such position", a);
 		}
 
 		if ((text[a] == '+') || (text[a] == '-'))
@@ -192,11 +195,11 @@ void Inputinspect::InspectOperator(string text)
 						continue;
 					}
 					else
-						Error_Report("Two binary operators in a row", a);
+						Error_Report("Oper error : Code 8_Inin_cp, two binary operators in a row", a);
 				}
 			}
 			else
-				Error_Report("Operator cannot appear in such position", a);
+				Error_Report("Oper error : Code 9_Inin_cp, operator cannot appear in such position", a);
 		}
 
 		if ((text[a] == '>') || (text[a] == '<'))
@@ -216,7 +219,7 @@ void Inputinspect::InspectOperator(string text)
 				}
 			}
 			else
-				Error_Report("Binary operator cannot appear in such position", a);
+				Error_Report("Oper error : Code 10_Inin_cp, binary operator cannot appear in such position", a);
 		}
 
 		if (text[a] == '(')
@@ -234,13 +237,15 @@ void Inputinspect::InspectOperator(string text)
 				}
 			}
 			else
-				Error_Report("Opening parenthesis cannot appear in such position", a);
+				Error_Report("Oper error : Code 11_Inin_cp, opening parenthesis cannot appear in such position", a);
 		}
 	}
 	if (text[text.size() - 1] != ')' && !isdigit(text[text.size() - 1]))
-		Error_Report("Lose the last operand at the end.", -1);
+		Error_Report("Oper error : Code 12_Inin_cp, lose the last operand at the end.", -1);
 }
 
+
+//wrapper function
 string Inputinspect::Processinput(string input)
 {
 	string output=OptimizeInput(input);
