@@ -22,7 +22,7 @@ string Inputinspect::OptimizeInput(string input)
 	if(k==input.size())
 		Error_Report("The input is empty!", -1);
 
-	for (int i = k; i < input.size(); i++)
+	for (unsigned int i = k; i < input.size(); i++)
 	{
 		if (isdigit(input[i]))
 		{
@@ -78,7 +78,7 @@ void Inputinspect::InspectOperator(string text)
 		Indicator = 1;
 	//0 means closing bracket, 1 means binory operator, 2 means opening bracket and unary operator.
 
-	for (int a = 0; a < text.size(); a++)
+	for (unsigned int a = 0; a < text.size(); a++)
 	{
 
 		if (isdigit(text[a]))
@@ -207,12 +207,12 @@ void Inputinspect::InspectOperator(string text)
 				{
 					a++;
 					continue;
-					Indicator == 2;
+					Indicator = 2;
 				}
 				else
 				{
 					continue;
-					Indicator == 2;
+					Indicator = 2;
 				}
 			}
 			else
