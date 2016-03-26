@@ -89,9 +89,9 @@ void displayMenu(Infix_Eval& ie, string& user_input, int& result, bool& exp_ente
 		// See if the polynomial is poperly entered
 		try{
 			Inputinspect Ins;
-			Ins.Processinput(user_input);
+			user_input = Ins.Processinput(user_input);
 			ie.clearData();
-			result = ie.evaluate(user_input, log_file);
+ 			result = ie.evaluate(user_input, log_file);
 			exp_entered = true;
 			cout << endl;
 			cout << "Result is: " << result << endl;

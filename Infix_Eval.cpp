@@ -72,26 +72,25 @@ int Infix_Eval::evaluate(string s, ofstream& log_file)
 			// Look at exponet
 			else if (c == '^')
 			{
-				while (!operators.empty() && !operands.empty() && getPrecedence(c) < getPrecedence(operators.top()))
+			/*	while (!operators.empty() && !operands.empty() && getPrecedence(c) < getPrecedence(operators.top()))
 				{
 					solveTop(operators, operands);
-					if (!operators.empty())operators.pop();
-				}
+					
+				}*/
+				if (c != '\0')
+					operators.push(c);
 			}
 
-			// Other operands
+			// Other operands, add them
 			else
 			{
-				while (!operators.empty() && !operands.empty() && getPrecedence(c) <= getPrecedence(operators.top()))
-				{
-					solveTop(operators, operands);
-					if (!operators.empty())operators.pop();
-				}
+				// Don't push the end of line onto the stack, that would be too much fun
+				if (c != '\0')
+					operators.push(c);
 			}
 
-			// Don't push the end of line onto the stack, that would be too much fun
-			if (c != '\0')
-				operators.push(c);
+			
+			
 		}
 
 		// Look at parens to set priority
@@ -105,9 +104,9 @@ int Infix_Eval::evaluate(string s, ofstream& log_file)
 			while (!operands.empty() && !operators.empty() && operators.top() != '(')
 			{
 				solveTop(operators, operands);
-				if (!operators.empty())operators.pop();
+				
 			}
-			if (!operators.empty())operators.pop();
+			
 		}
 
 		// Operator not valid, error
@@ -126,7 +125,7 @@ int Infix_Eval::evaluate(string s, ofstream& log_file)
 	while (!operators.empty() && !operands.empty())
 	{
 		solveTop(operators, operands);
-		if(!operators.empty())operators.pop();
+
 	}
 
 	// Return the answer
@@ -152,8 +151,10 @@ void Infix_Eval::solveTop(stack<char>& operators, stack<double>& operands)
 	// Get the operator
 	char c;
 	if (!operators.empty())
+	{
 		c = operators.top();
-
+	}
+		
 	// Error, nothing on the stack
 	else
 	{
