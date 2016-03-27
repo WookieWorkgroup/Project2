@@ -10,3 +10,6 @@ Done
 Errors
 1) Comparison operator has higher precedence than addition (but project specs say should be lower). 
 2) 2+2∧2×3 is 66 (error in precedence)
+
+
+(In the Eval.cpp, the getPrecedence function never be used, so there are no precedence of the operator)
