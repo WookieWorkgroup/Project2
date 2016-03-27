@@ -7,7 +7,6 @@ Done
 3)1+2*3 cannot calculator corretly. (fixed, had one too many pops, or sodas)
 4)Divide by zero not caught(now Josh's detector can report like 1/0, but can't detect devide 0 like this 1/(6-6), so I think it should be detected when it do the divide calculate but not when the expression input. (fixed, parens and ^ were calling solve top too early)
 
-ToDo
-1) Test - bang on the code and see if you can break it 
-2) Report - check over the report to see if I said anything stupid
-3) Have some fun over break
+Errors
+1) Comparison operator has higher precedence than addition (but project specs say should be lower). 
+2) 2+2∧2×3 is 66 (error in precedence)
