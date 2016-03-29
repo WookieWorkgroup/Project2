@@ -194,6 +194,11 @@ void Inputinspect::InspectOperator(string text)
 						a++;
 						continue;
 					}
+					else if ((a < text.size() - 1) && isdigit(text[a + 1]) && text[a - 1] == '(')
+					{
+						Indicator = 1;
+						continue;
+					}
 					else
 						Error_Report("Oper error : Code 8_Inin_cp, two binary operators in a row", a);
 				}
@@ -209,13 +214,13 @@ void Inputinspect::InspectOperator(string text)
 				if ((a < text.size() - 1) && (text[a + 1] == '='))
 				{
 					a++;
-					continue;
 					Indicator = 2;
+					continue;
 				}
 				else
 				{
-					continue;
 					Indicator = 2;
+					continue;
 				}
 			}
 			else
