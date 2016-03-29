@@ -40,74 +40,69 @@ int Infix_Eval::evaluate(string s, ofstream& log_file)
 		// Check to see if - is negative number or subtraction
 		else if (c == '-' && (token == 0 || isOperator(s[--prev])))
 		{
-			// look at - symbol and see if treat as negative or subtraction
-			// treat as a negative because after a operator or first in expression
-				++token;
-				c = s[token];
+		// look at - symbol and see if treat as negative or subtraction
+		// treat as a negative because after a operator or first in expression
+		++token;
+		c = s[token];
 
-				// it is a negative number
-				if (isdigit(c))
+			// it is a negative number
+			if (isdigit(c))
+			{
+				// Check for more digits
+				int number = 0;
+				while (token < s.length() && isdigit(c))
 				{
-					// Check for more digits
-					int number = 0;
-					while (token < s.length() && isdigit(c))
-					{
-						number *= 10;
-						number += c - 48;
-						++token;
-						c = s[token];
-					}
-
-					// Make it negative and add to operands
-					number *= -1;
-					operands.push(number);
-					--token;
+					number *= 10;
+					number += c - 48;
+					++token;
+					c = s[token];
 				}
 
-				// Subtraction case
-				else
-				{
-					while (!operators.empty() && !operands.empty() && getPrecedence(c) < getPrecedence(operators.top()) && operators.top() != '(')
-					{
-						solveTop(operators, operands);
-
-					}
-						operators.push(c);
-
-				}
-
+				// Make it negative and add to operands
+				number *= -1;
+				operands.push(number);
+				--token;
 			}
 
-		// Look at parens to set priority
-			else if (c == '(')
+			// Subtraction case
+			else
 			{
+				while (!operators.empty() && !operands.empty() && getPrecedence(c) < getPrecedence(operators.top()) && operators.top() != '(')
+				{
+				solveTop(operators, operands);
+				}
 				operators.push(c);
 			}
 
+		}
+
+		// Look at parens to set priority
+		else if (c == '(')
+		{
+			operators.push(c);
+		}
+
 		// Solve the inside of the parens
-			else if (c == ')')
-			{
-				while (!operands.empty() && !operators.empty() && operators.top() != '(')
-				{
-					solveTop(operators, operands);
+		else if (c == ')')
+		{
+			while (!operands.empty() && !operators.empty() && operators.top() != '(')
+				solveTop(operators, operands);
 
-				}
-
-			}
+		}
 			// Other operands, add them
-			else if (isOperator(c))
+		else if (isOperator(c))
+		{
+			// Go ahead and solve lower priortiy operators
+			while (!operators.empty() && !operands.empty() && getPrecedence(c) < getPrecedence(operators.top()) && operators.top() != '(')
 			{
-				// Go ahead and solve lower priortiy operators
-				while (!operators.empty() && !operands.empty() && getPrecedence(c) < getPrecedence(operators.top()) && operators.top() != '(')
-				{
-					solveTop(operators, operands);
+				solveTop(operators, operands);
 
-				}
-				
-				// Don't push the end of line onto the stack, that would be too much fun
-				if (c != '\0')
-					operators.push(c);
 			}
+				
+			// Don't push the end of line onto the stack, that would be too much fun
+			if (c != '\0')
+				operators.push(c);
+		}
 
 		// Must be something we can work with (not operator, operand or paren)
 		else
