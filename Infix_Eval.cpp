@@ -16,6 +16,8 @@ int Infix_Eval::evaluate(string s, ofstream& log_file)
 	unsigned int token = 0;
 	while (token < s.length())
 	{
+		// place holders 
+		int prev = token;
 		char c = s[token];
 		if (isdigit(c))
 		{
@@ -35,18 +37,15 @@ int Infix_Eval::evaluate(string s, ofstream& log_file)
 			// put the number into the stack
 			operands.push(number);
 		}
-		else if (isOperator(c))
+		// Check to see if - is negative number or subtraction
+		else if (c == '-' && (token == 0 || isOperator(s[--prev])))
 		{
 			// look at - symbol and see if treat as negative or subtraction
-			int temp = token;		
-
 			// treat as a negative because after a operator or first in expression
-			if (c == '-' && (token == 0 || isOperator(s[--temp])))
-			{
 				++token;
 				c = s[token];
 
-				// Get the number
+				// it is a negative number
 				if (isdigit(c))
 				{
 					// Check for more digits
@@ -62,54 +61,55 @@ int Infix_Eval::evaluate(string s, ofstream& log_file)
 					// Make it negative and add to operands
 					number *= -1;
 					operands.push(number);
-				
+					--token;
 				}
-			
-				
+
+				// Subtraction case
+				else
+				{
+					while (!operators.empty() && !operands.empty() && getPrecedence(c) < getPrecedence(operators.top()) && operators.top() != '(')
+					{
+						solveTop(operators, operands);
+
+					}
+						operators.push(c);
+
+				}
 
 			}
-			
-			// Look at exponet
-			else if (c == '^')
+
+		// Look at parens to set priority
+			else if (c == '(')
 			{
-			/*	while (!operators.empty() && !operands.empty() && getPrecedence(c) < getPrecedence(operators.top()))
+				operators.push(c);
+			}
+
+		// Solve the inside of the parens
+			else if (c == ')')
+			{
+				while (!operands.empty() && !operators.empty() && operators.top() != '(')
 				{
 					solveTop(operators, operands);
-					
-				}*/
-				if (c != '\0')
-					operators.push(c);
-			}
 
+				}
+
+			}
 			// Other operands, add them
-			else
+			else if (isOperator(c))
 			{
+				// Go ahead and solve lower priortiy operators
+				while (!operators.empty() && !operands.empty() && getPrecedence(c) < getPrecedence(operators.top()) && operators.top() != '(')
+				{
+					solveTop(operators, operands);
+
+				}
+				
 				// Don't push the end of line onto the stack, that would be too much fun
 				if (c != '\0')
 					operators.push(c);
 			}
 
-			
-			
-		}
-
-		// Look at parens to set priority
-		else if (c == '(')
-		{
-			operators.push(c);
-		}
-
-		else if (c == ')')
-		{
-			while (!operands.empty() && !operators.empty() && operators.top() != '(')
-			{
-				solveTop(operators, operands);
-				
-			}
-			
-		}
-
-		// Operator not valid, error
+		// Must be something we can work with (not operator, operand or paren)
 		else
 		{
 			std::string msg = "Calc Error: Code 0_ie_cp, invalid symbol, ";
@@ -138,6 +138,7 @@ int Infix_Eval::evaluate(string s, ofstream& log_file)
 		std::string msg = "Calc error: no result left on stack, Code 1_ie_cp";
 		throw std::exception(msg.c_str());
 	}
+
 
 	return int(operands.top());
 }
