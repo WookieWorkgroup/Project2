@@ -178,7 +178,7 @@ void Inputinspect::InspectOperator(string text)
 					continue;
 				}
 				else
-					Error_Report("Oper error : Code 8_Inin_cp, operator cannot appear in such position", a);
+					Error_Report("Oper error : Code 8_Inin_cp, operator cannot appear in such position", a+1);
 			}
 			else if (Indicator == 2)
 			{
