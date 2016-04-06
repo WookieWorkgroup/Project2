@@ -170,10 +170,15 @@ void Inputinspect::InspectOperator(string text)
 
 		if ((text[a] == '+') || (text[a] == '-'))
 		{
-			if (Indicator == 1)
+			if (Indicator == 1&& (a < text.size() - 1))
 			{
-				Indicator = 2;
-				continue;
+				if((text[a+1]=='(')||(text[a+1]=='!')||isdigit(text[a+1]))
+				{
+					Indicator = 2;
+					continue;
+				}
+				else
+					Error_Report("Oper error : Code 8_Inin_cp, operator cannot appear in such position", a);
 			}
 			else if (Indicator == 2)
 			{
@@ -200,11 +205,11 @@ void Inputinspect::InspectOperator(string text)
 						continue;
 					}
 					else
-						Error_Report("Oper error : Code 8_Inin_cp, two binary operators in a row", a);
+						Error_Report("Oper error : Code 9_Inin_cp, two binary operators in a row", a);
 				}
 			}
 			else
-				Error_Report("Oper error : Code 9_Inin_cp, operator cannot appear in such position", a);
+				Error_Report("Oper error : Code 10_Inin_cp, operator cannot appear in such position", a);
 		}
 
 		if ((text[a] == '>') || (text[a] == '<'))
@@ -224,7 +229,7 @@ void Inputinspect::InspectOperator(string text)
 				}
 			}
 			else
-				Error_Report("Oper error : Code 10_Inin_cp, binary operator cannot appear in such position", a);
+				Error_Report("Oper error : Code 11_Inin_cp, binary operator cannot appear in such position", a);
 		}
 
 		if (text[a] == '(')
@@ -242,11 +247,11 @@ void Inputinspect::InspectOperator(string text)
 				}
 			}
 			else
-				Error_Report("Oper error : Code 11_Inin_cp, opening parenthesis cannot appear in such position", a);
+				Error_Report("Oper error : Code 12_Inin_cp, opening parenthesis cannot appear in such position", a);
 		}
 	}
 	if (text[text.size() - 1] != ')' && !isdigit(text[text.size() - 1]))
-		Error_Report("Oper error : Code 12_Inin_cp, lose the last operand at the end.", -1);
+		Error_Report("Oper error : Code 13_Inin_cp, lose the last operand at the end.", -1);
 }
 
 
