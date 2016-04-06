@@ -38,7 +38,7 @@ int Infix_Eval::evaluate(string s, ofstream& log_file)
 			operands.push(number);
 		}
 		// Check to see if - is negative number or subtraction
-		else if (c == '-' && (token == 0 || isOperator(s[--prev])))
+		else if (c == '-' && (token == 0 || isOperator(s[--prev]) || operators.top() == '('))
 		{
 		// look at - symbol and see if treat as negative or subtraction
 		// treat as a negative because after a operator or first in expression
