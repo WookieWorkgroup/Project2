@@ -58,7 +58,7 @@ void displayMenu(Infix_Eval& ie, string& user_input, int& result, bool& exp_ente
 	// My choices
 	int userSelection(-1);
 	cout << "Please select one: \n\n";
-	cout << "1:\tEnter an Infix Expression such as (3+4)/20 to calculate the result\n";
+	cout << "1:\tEnter an Infix Expression such as 3+4*(-20) to calculate the result\n";
 	cout << "2:\tDisplay Expression Entered One\n";
 	cout << "3:\tDisplay Result\n";
 	cout << "4:\tClear entries\n";
@@ -103,7 +103,7 @@ void displayMenu(Infix_Eval& ie, string& user_input, int& result, bool& exp_ente
 		{
 			std::cout << std::endl << std::endl;
 			
-			std::cout << e.what() << std::endl;
+			std::cout << e.what() << std::endl << std::endl;
 			log_file << e.what() << endl;
 			std::cout << "Calculation failed, try again!!!" << std::endl;
 			std::cout << "Purging previous data" << std::endl;
